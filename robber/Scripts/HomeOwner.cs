@@ -13,39 +13,48 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] TileMapLayer floor;
 	[Export] Node2D _player;
 
-    private Point[] localPoints;
+
+	private RandomNumberGenerator randomGenerator;
+    // private Point[] localPoints;
 	private Point currentPoint;
 	private Point targetPoint;
 	private Point nextPoint = null;
 	private List<Point> path = new List<Point>();
-	private List<Point> chasePath = new List<Point>();
+	// private List<Point> chasePath = new List<Point>();
 
 	private int index = 0;
 	private bool isMoving = false;
 	private bool isWaiting = false;
 	private bool isChasing = false;
+	private bool recoverPath = false;
 
 	[Export] public float Speed = 30.0f;
-    [Export] public float ArrivalTolerance = 5.0f; // How close counts as "arrived"
+    [Export] public float ArrivalTolerance = 0.75f; // How close counts as "arrived"
 
     public void MoveTo(Vector2 targetGlobalPos, double delta)
     {
+		float speed = Speed;
+
+		if (isChasing) speed *= 1.5f;
+
         Vector2 direction = GlobalPosition.DirectionTo(targetGlobalPos);
 
         if (GlobalPosition.DistanceTo(targetGlobalPos) > ArrivalTolerance)
         {
-            Velocity = direction * Speed;
+            Velocity = direction * speed;
         }
         else
         {
             Velocity = Vector2.Zero;
         }
-		// LookAt(targetGlobalPos);
 		
 		float rotationSpeed = 3.0f;
+		Vector2 rotationTarget = targetGlobalPos;
+
+		if (isChasing) rotationTarget = _player.GlobalPosition;
 
 		// Smooth rotation
-    	float targetAngle = GlobalPosition.AngleToPoint(targetGlobalPos);
+    	float targetAngle = GlobalPosition.AngleToPoint(rotationTarget);
     	Rotation = (float)Mathf.LerpAngle(Rotation, targetAngle, rotationSpeed * delta);
 
         MoveAndSlide();
@@ -53,27 +62,24 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _Ready()
     {
+		randomGenerator = new RandomNumberGenerator();
+
 		debugLight.Enabled = false;
-
-        localPoints = PathfindingPoints.allPoints; 
-
-        GD.Print($"home_owner stored {localPoints.Length} points");
-    	
-		Position = localPoints[0].GlobalPosition; // Start point
-
-		currentPoint = localPoints[0].neighbors[1];
-
-		Position = currentPoint.GlobalPosition;
 
 		AStar.floorLayer = floor;
 		AStar.CreatePoints();
+
+		currentPoint = AStar.starPoints[12];
+
+		GlobalPosition = currentPoint.GlobalPosition;
 	}
 
     public override void _Draw()
     {
+		// Dot map
 		if (debugMode)
 		{
-			foreach (var p in localPoints) {
+			foreach (var p in AStar.starPoints) {
 				Vector2 pointPos = ToLocal(p.GlobalPosition);
 				DrawCircle(pointPos, 3.5f, Colors.Red, true);
 
@@ -84,6 +90,7 @@ public partial class HomeOwner : CharacterBody2D
 				}
 			}
 
+			// Path to target
 			if (path != null)
 			{
 				for (int i = path.Count - 1; i >= 0; i--)
@@ -96,34 +103,6 @@ public partial class HomeOwner : CharacterBody2D
 						DrawLine(origin, ToLocal(path[i - 1].GlobalPosition), Colors.Green, 0.5f, true);
 				}	
 			}	
-
-			foreach (var s in AStar.starPoints)
-			{
-				var current = ToLocal(s.GlobalPosition);
-				
-				if (Position.DistanceTo(s.GlobalPosition) < 20.0f)
-				{
-					DrawCircle(current, 3.5f, Colors.DarkOrange, true);
-				}
-				else
-				{
-					DrawCircle(current, 3.5f, Colors.Purple, true);
-				}
-
-			}
-
-			// if (chasePath != null)
-			// {
-			// 	for (int i = path.Count - 1; i >= 0; i--)
-			// 	{
-			// 		Vector2 origin = ToLocal(chasePath[i].GlobalPosition);
-
-			// 		DrawCircle(origin, 3.5f, Colors.Black, true);
-
-			// 		if (i > 0)
-			// 			DrawLine(origin, ToLocal(chasePath[i - 1].GlobalPosition), Colors.Black, 0.5f, true);
-			// 	}
-			// }
 		}
     }
 
@@ -138,132 +117,154 @@ public partial class HomeOwner : CharacterBody2D
 		isWaiting = false;
 	}
 
-	private List<Point> ScanPoint(Point start, Point target) 
-	{
-		List<Point> path = new List<Point>();
+	// private List<Point> ScanPoint(Point start, Point target) 
+	// {
+	// 	List<Point> path = new List<Point>();
 
-		foreach (Point p in localPoints) p.visited = false;
+	// 	foreach (Point p in localPoints) p.visited = false;
 
-		Point _currentPoint = start;
+	// 	Point _currentPoint = start;
 
-		int maxSteps = 100;
-		int currentStep = 0;
+	// 	int maxSteps = 100;
+	// 	int currentStep = 0;
 
-		while (_currentPoint != target || currentStep <= maxSteps)
-		{
-			path.Add(_currentPoint);
+	// 	while (_currentPoint != target || currentStep <= maxSteps)
+	// 	{
+	// 		path.Add(_currentPoint);
 
-			currentStep++;
-			_currentPoint.visited = true;
+	// 		currentStep++;
+	// 		_currentPoint.visited = true;
 			
-			Point _closestNeighbor = null;
-			float shortestDistance = float.MaxValue;
+	// 		Point _closestNeighbor = null;
+	// 		float shortestDistance = float.MaxValue;
 
-			foreach (Point n in _currentPoint.neighbors)
-			{
-				if (n.visited || n == null) continue;
+	// 		foreach (Point n in _currentPoint.neighbors)
+	// 		{
+	// 			if (n.visited || n == null) continue;
 
-				float distance = _currentPoint.GlobalPosition.DistanceTo(n.GlobalPosition);
+	// 			float distance = _currentPoint.GlobalPosition.DistanceTo(n.GlobalPosition);
 
-				if (n == target)
-				{
-					_closestNeighbor = n;
-					break;
-				}
+	// 			if (n == target)
+	// 			{
+	// 				_closestNeighbor = n;
+	// 				break;
+	// 			}
 
-				if (distance < shortestDistance)
-				{
-					shortestDistance = distance;
-					_closestNeighbor = n;
-				}
-			}
+	// 			if (distance < shortestDistance)
+	// 			{
+	// 				shortestDistance = distance;
+	// 				_closestNeighbor = n;
+	// 			}
+	// 		}
 
-			if (_closestNeighbor == null)
-			{
-				GD.Print("No path");
-				return null;
-			}
+	// 		if (_closestNeighbor == null)
+	// 		{
+	// 			GD.Print("No path");
+	// 			return null;
+	// 		}
 
-			_currentPoint = _closestNeighbor;
+	// 		_currentPoint = _closestNeighbor;
 
-			if (_currentPoint == target)
-        	{
-            	path.Add(target);
-            	break;
-        	}
-		}
+	// 		if (_currentPoint == target)
+    //     	{
+    //         	path.Add(target);
+    //         	break;
+    //     	}
+	// 	}
 
-		return path;
-	}
+	// 	return path;
+	// }
 
 	private void PatrolState(double delta)
 	{
 		if (!isMoving && !isWaiting) 
 		{
-			RandomNumberGenerator rnd = new RandomNumberGenerator();
-			int r = rnd.RandiRange(0, localPoints.Length - 1);
-			GD.Print($"Random number = {r}");
+			if (AStar.starPoints.Count <= 0) return;
 
-			targetPoint = localPoints[r];
-			GD.Print($"Target = {targetPoint.Name}");
-		
-			if (targetPoint == currentPoint) return; // If new target point is our current point we repeat
+			int r = randomGenerator.RandiRange(0, AStar.starPoints.Count - 1);
+			targetPoint = AStar.starPoints[r];
 
-			path = ScanPoint(currentPoint, targetPoint);
+			if (targetPoint == currentPoint) return; 
 
-			if (path == null) return; // If no pah found return and try with new target
+			path = AStar.GetPath(currentPoint.GlobalPosition, targetPoint.GlobalPosition);
 
-			GD.Print("Path = " + string.Join(" -> ", path.Select(p => p.Name)));
+			if (path.Count <= 0) 
+			{
+				GD.Print("No path found");
+				return; 
+			}
+
+			GD.Print($"Path to {targetPoint.Name} Length = {path.Count}");
+			index = 0; 
 			isMoving = true;
 		}
 		
-		if (index < path.Count)
+		if (isMoving && !isWaiting)
 		{
-			nextPoint = path[index];
-			
-			MoveTo(nextPoint.GlobalPosition, delta);
-
-			if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
+			if (index < path.Count)
 			{
-				index++;	
-				currentPoint = nextPoint;
+				nextPoint = path[index];
+				MoveTo(nextPoint.GlobalPosition, delta);
+
+				// Arrived to nextPoint
+				if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
+				{
+					currentPoint = nextPoint;
+					index++;    
+					
+					if (index >= path.Count)
+					{
+						GD.Print("Path end");
+						isMoving = false;
+						index = 0;
+						path.Clear();
+
+						if (!isWaiting) StartWait(5.0f); 
+					}
+				}
 			}
-		}
-
-		if (GlobalPosition.DistanceTo(targetPoint.GlobalPosition) < ArrivalTolerance)
-		{
-			isMoving = false;
-			index = 0;
-			path = new List<Point>();
-
-			if (!isWaiting) StartWait(5.0f); // Wait 5 seconds before starting new route
 		}
 	}
 
 	private void ChaseState(double delta)
 	{
-		chasePath = AStar.GetPath(GlobalPosition, _player.GlobalPosition);
-		
-		if (chasePath == null) return;
+		if (AStar.starPoints.Count <= 0 || _player == null) return;
 
-		if (index < chasePath.Count)
+		path = AStar.GetPath(GlobalPosition, _player.GlobalPosition);
+
+		if (path == null || path.Count <= 0) GD.Print("Chase path error");
+
+		nextPoint = (path.Count > 1) ? path[1] : path[0];
+
+		MoveTo(nextPoint.GlobalPosition, delta);
+
+		// Optional: Update currentPoint for when the chase ends
+		if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
 		{
-			nextPoint = chasePath[index];
-			
-			MoveTo(nextPoint.GlobalPosition, delta);
+			currentPoint = nextPoint;
+		}
+	}
 
-			if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
+	private Point GetClosestPoint(Vector2 target)
+	{
+		Point closestPoint = null;
+		float closestDistance = float.MaxValue;
+
+		foreach (var p in AStar.starPoints)
+		{
+			float distance = target.DistanceTo(p.GlobalPosition);
+
+			if (distance < 10.0f)
 			{
-				index++;	
-				currentPoint = nextPoint;
+				if (distance < closestDistance)
+				{
+					closestPoint = p;
+					closestDistance = distance;
+				}
 			}
 		}
 
-		if (GlobalPosition.DistanceTo(_player.GlobalPosition) < ArrivalTolerance)
-		{
-			isMoving = false;
-			index = 0;
-		}
+		return closestPoint;
 	}
 
     public override void _Process(double delta)
@@ -283,19 +284,26 @@ public partial class HomeOwner : CharacterBody2D
     {
 		QueueRedraw();
 
-		//Doesn't work togheter
+		var bodies = viewArea.GetOverlappingBodies();
 
-		// var bodies = viewArea.GetOverlappingBodies();
-		
-		// if (bodies.Contains(_player))
-		// {
-		// 	ChaseState(delta);
-		// 	path = new List<Point>();
-		// 	isMoving = false;
-		// 	isWaiting = false;
-		// }
-		
-		PatrolState(delta);
+		if (bodies.Contains(_player))
+		{
+			ChaseState(delta);
+			isMoving = false;
+			isWaiting = false;
+			
+			isChasing = true;
+			recoverPath = true;
+		}
+		else if (recoverPath)
+		{
+			currentPoint = GetClosestPoint(GlobalPosition);
+			recoverPath = false;
+			isChasing = false;
+
+			StartWait(2.5f);
+		}
+		else PatrolState(delta);
     }
 }
 
