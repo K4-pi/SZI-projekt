@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cfroj2cju6h16"]
+
+[ext_resource type="Script" uid="uid://c3wmipsl57s15" path="res://Scripts/HomeOwner.cs" id="1_efvol"]
+[ext_resource type="Texture2D" uid="uid://dhimeg7uwrmmr" path="res://Assets/enemy_nromal.png" id="2_efvol"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_efvol"]
+light_mode = 2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_efvol"]
+radius = 4.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_efvol"]
+polygon = PackedVector2Array(-2, -2, -2, 2, 1, 2, 1, -2)
+
+[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("viewArea")]
+script = ExtResource("1_efvol")
+viewArea = NodePath("View")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=656275635]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_efvol")
+position = Vector2(3, 0)
+texture = ExtResource("2_efvol")
+metadata/_edit_lock_ = true
+
+[node name="body_collider" type="CollisionShape2D" parent="." unique_id=1029187731]
+shape = SubResource("CircleShape2D_efvol")
+metadata/_edit_lock_ = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=532899605]
+occluder = SubResource("OccluderPolygon2D_efvol")
+metadata/_edit_lock_ = true
+
+[node name="View" type="Area2D" parent="." unique_id=894451175]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="View" unique_id=1176655461]
+position = Vector2(1, 0)
+polygon = PackedVector2Array(0, 0, 44, 24, 49, 13, 51, 0, 49, -11, 43, -22)

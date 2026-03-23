@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://c0tsu8ha3wjsp"]
+
+[ext_resource type="Script" uid="uid://dy7lglfnm8s3s" path="res://Scripts/Point.cs" id="1_38k44"]
+
+[node name="Point" type="Node2D" unique_id=881878671 node_paths=PackedStringArray("neighbors")]
+script = ExtResource("1_38k44")
+neighbors = []
