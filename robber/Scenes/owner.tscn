@@ -12,9 +12,10 @@ radius = 4.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_efvol"]
 polygon = PackedVector2Array(-2, -2, -2, 2, 1, 2, 1, -2)
 
-[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("viewArea")]
+[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("viewArea", "rayToPlayer")]
 script = ExtResource("1_efvol")
 viewArea = NodePath("View")
+rayToPlayer = NodePath("RayToPlayer")
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=656275635]
@@ -38,3 +39,6 @@ metadata/_edit_lock_ = true
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="View" unique_id=1176655461]
 position = Vector2(1, 0)
 polygon = PackedVector2Array(0, 0, 37, 58, 94, 58, 94, 29, 94, 0, 94, -25, 94, -49, 43, -49)
+
+[node name="RayToPlayer" type="RayCast2D" parent="." unique_id=1935102908]
+target_position = Vector2(0, 25)

@@ -12,6 +12,7 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] Area2D viewArea;
 	[Export] TileMapLayer floor;
 	[Export] Node2D _player;
+	[Export] RayCast2D rayToPlayer;
 
 	private RandomNumberGenerator randomGenerator;
     
@@ -226,14 +227,17 @@ public partial class HomeOwner : CharacterBody2D
 
 		var bodies = viewArea.GetOverlappingBodies();
 
-		if (bodies.Contains(_player))
-		{
+		rayToPlayer.TargetPosition = ToLocal(_player.Position);
+		rayToPlayer.ForceRaycastUpdate();
+
+		if (bodies.Contains(_player) && rayToPlayer.GetCollider() == _player)
+		{	
 			ChaseState(delta);
 			isMoving = false;
 			isWaiting = false;
 			
 			isChasing = true;
-			recoverPath = true;
+			recoverPath = true;	
 		}
 		else if (recoverPath)
 		{
