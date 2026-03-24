@@ -1,7 +1,5 @@
 [gd_scene format=4 uid="uid://cgrn0yrh4qbsk"]
 
-[ext_resource type="PackedScene" uid="uid://c0tsu8ha3wjsp" path="res://Scenes/point.tscn" id="1_jjvhh"]
-[ext_resource type="Script" uid="uid://kyqx3vum1eva" path="res://Scripts/PathfindingPoints.cs" id="2_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://cdgw1j74roeym" path="res://Scenes/player.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cfroj2cju6h16" path="res://Scenes/owner.tscn" id="5_kry3j"]
 [ext_resource type="Texture2D" uid="uid://bffnvhabfj238" path="res://Assets/light_texture.png" id="7_6bp64"]
@@ -145,78 +143,6 @@ texture_filter = 1
 tile_map_data = PackedByteArray("AAD9////AAAAAAAAAAD+////AAAAAAAAAAD/////AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAD//wIAAAAAAAAAAAD+/wIAAAAAAAAAAAD9/wIAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wAAAAAAAAAAAAD+/wAAAAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD+/wEAAAAAAAAAAAD+/wMAAAAAAAAAAAD9/wQAAAAAAAAAAAD9/wUAAAAAAAAAAAD9/wYAAAAAAAAAAAD+/wYAAAAAAAAAAAD//wYAAAAAAAAAAAAAAAYAAAAAAAAAAAABAAYAAAAAAAAAAAACAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAD//wUAAAAAAAAAAAD+/wUAAAAAAAAAAAD+/wQAAAAAAAAAAAD//wQAAAAAAAAAAAAAAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAFAAYAAAAAAAAAAAAEAAYAAAAAAAAAAAADAAYAAAAAAAAAAAADAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAUAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAALAAUAAAAAAAAAAAALAAYAAAAAAAAAAAALAAQAAAAAAAAAAAALAAMAAAAAAAAAAAALAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAIAAAAAAAAAAAAJAAIAAAAAAAAAAAAHAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAFAAIAAAAAAAAAAAAEAAIAAAAAAAAAAAADAAIAAAAAAAAAAAACAAIAAAAAAAAAAAADAAEAAAAAAAAAAAADAAAAAAAAAAAAAAADAP//AAAAAAAAAAACAP//AAAAAAAAAAABAP//AAAAAAAAAAACAAAAAAAAAAAAAAAEAP//AAAAAAAAAAAFAP//AAAAAAAAAAAGAP//AAAAAAAAAAAHAP//AAAAAAAAAAAIAP//AAAAAAAAAAAJAP//AAAAAAAAAAAJAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAFAP7/AAAAAAAAAAAFAP3/AAAAAAAAAAAFAPz/AAAAAAAAAAAFAPv/AAAAAAAAAAAFAPr/AAAAAAAAAAAFAPn/AAAAAAAAAAAGAPn/AAAAAAAAAAAGAPr/AAAAAAAAAAAGAPv/AAAAAAAAAAAGAPz/AAAAAAAAAAAGAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAPz/AAAAAAAAAAAEAPv/AAAAAAAAAAAEAPr/AAAAAAAAAAAEAPn/AAAAAAAAAAA=")
 tile_set = SubResource("TileSet_6bp64")
 
-[node name="PatrolPathfindingPoints" type="Node2D" parent="." unique_id=36688525]
-position = Vector2(-89, 87)
-script = ExtResource("2_jjvhh")
-
-[node name="Point17" parent="PatrolPathfindingPoints" unique_id=881878671 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(146, -12)
-neighbors = [NodePath("../Point7"), NodePath("../Point10")]
-
-[node name="Point7" parent="PatrolPathfindingPoints" unique_id=1029625889 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(200, -15)
-neighbors = [NodePath("../Point13"), NodePath("../Point12"), NodePath("../Point17")]
-
-[node name="Point15" parent="PatrolPathfindingPoints" unique_id=731880153 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(169, -86)
-neighbors = [NodePath("../Point6"), NodePath("../Point14"), NodePath("../Point8"), NodePath("../Point16")]
-
-[node name="Point14" parent="PatrolPathfindingPoints" unique_id=263429218 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(113, -96)
-neighbors = [NodePath("../Point4"), NodePath("../Point2"), NodePath("../Point11"), NodePath("../Point15")]
-
-[node name="Point16" parent="PatrolPathfindingPoints" unique_id=1417023614 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(230, -58)
-neighbors = [NodePath("../Point11"), NodePath("../Point8"), NodePath("../Point13")]
-
-[node name="Point13" parent="PatrolPathfindingPoints" unique_id=85135009 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(228, -35)
-neighbors = [NodePath("../Point16"), NodePath("../Point11"), NodePath("../Point12"), NodePath("../Point7")]
-
-[node name="Point12" parent="PatrolPathfindingPoints" unique_id=1798981615 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(251, 4)
-neighbors = [NodePath("../Point13"), NodePath("../Point7"), NodePath("../Point10")]
-
-[node name="Point11" parent="PatrolPathfindingPoints" unique_id=1290227662 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(159, -46)
-neighbors = [NodePath("../Point14"), NodePath("../Point13"), NodePath("../Point16")]
-
-[node name="Point10" parent="PatrolPathfindingPoints" unique_id=1427616766 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(114, 21)
-neighbors = [NodePath("../Point17"), NodePath("../Point12"), NodePath("../Point9"), NodePath("../Point5")]
-
-[node name="Point9" parent="PatrolPathfindingPoints" unique_id=278557219 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(51, 17)
-neighbors = [NodePath("../Point5"), NodePath("../Point10")]
-
-[node name="Point8" parent="PatrolPathfindingPoints" unique_id=2070614526 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(227, -88)
-neighbors = [NodePath("../Point15"), NodePath("../Point16")]
-
-[node name="Point6" parent="PatrolPathfindingPoints" unique_id=2077364426 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(178, -127)
-neighbors = [NodePath("../Point3"), NodePath("../Point"), NodePath("../Point15")]
-
-[node name="Point5" parent="PatrolPathfindingPoints" unique_id=1999870435 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(65, -31)
-neighbors = [NodePath("../Point9"), NodePath("../Point10"), NodePath("../Point2")]
-
-[node name="Point4" parent="PatrolPathfindingPoints" unique_id=356775473 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(51, -94)
-neighbors = [NodePath("../Point2"), NodePath("../Point14")]
-
-[node name="Point" parent="PatrolPathfindingPoints" unique_id=129226719 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(191, -187)
-neighbors = [NodePath("../Point3"), NodePath("../Point6")]
-
-[node name="Point3" parent="PatrolPathfindingPoints" unique_id=781475769 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(167, -188)
-neighbors = [NodePath("../Point"), NodePath("../Point6")]
-
-[node name="Point2" parent="PatrolPathfindingPoints" unique_id=1088385422 node_paths=PackedStringArray("neighbors") instance=ExtResource("1_jjvhh")]
-position = Vector2(65, -67)
-neighbors = [NodePath("../Point5"), NodePath("../Point4"), NodePath("../Point14")]
-
 [node name="player" parent="." unique_id=1319846753 instance=ExtResource("3_8gbba")]
 position = Vector2(182, 40)
 
@@ -225,7 +151,6 @@ position = Vector2(164, 92)
 debugLight = NodePath("../DebugLight")
 floor = NodePath("../NewHouse/FloorLayer")
 _player = NodePath("../player")
-metadata/_edit_lock_ = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=237580471]
 position = Vector2(24, 25)

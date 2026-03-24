@@ -13,14 +13,12 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] TileMapLayer floor;
 	[Export] Node2D _player;
 
-
 	private RandomNumberGenerator randomGenerator;
-    // private Point[] localPoints;
+    
+	private List<Point> path = new List<Point>();
 	private Point currentPoint;
 	private Point targetPoint;
 	private Point nextPoint = null;
-	private List<Point> path = new List<Point>();
-	// private List<Point> chasePath = new List<Point>();
 
 	private int index = 0;
 	private bool isMoving = false;
@@ -60,52 +58,6 @@ public partial class HomeOwner : CharacterBody2D
         MoveAndSlide();
     }
 
-    public override void _Ready()
-    {
-		randomGenerator = new RandomNumberGenerator();
-
-		debugLight.Enabled = false;
-
-		AStar.floorLayer = floor;
-		AStar.CreatePoints();
-
-		currentPoint = AStar.starPoints[12];
-
-		GlobalPosition = currentPoint.GlobalPosition;
-	}
-
-    public override void _Draw()
-    {
-		// Dot map
-		if (debugMode)
-		{
-			foreach (var p in AStar.starPoints) {
-				Vector2 pointPos = ToLocal(p.GlobalPosition);
-				DrawCircle(pointPos, 3.5f, Colors.Red, true);
-
-				foreach (Point n in p.neighbors) {
-					
-					if (n != null)
-						DrawLine(pointPos, ToLocal(n.GlobalPosition), Colors.Red, 0.5f, true);
-				}
-			}
-
-			// Path to target
-			if (path != null)
-			{
-				for (int i = path.Count - 1; i >= 0; i--)
-				{
-					Vector2 origin = ToLocal(path[i].GlobalPosition);
-
-					DrawCircle(origin, 3.5f, Colors.Green, true);
-
-					if (i > 0)
-						DrawLine(origin, ToLocal(path[i - 1].GlobalPosition), Colors.Green, 0.5f, true);
-				}	
-			}	
-		}
-    }
-
 	private async void StartWait(float seconds)
 	{
 		isWaiting = true;
@@ -117,64 +69,6 @@ public partial class HomeOwner : CharacterBody2D
 		isWaiting = false;
 	}
 
-	// private List<Point> ScanPoint(Point start, Point target) 
-	// {
-	// 	List<Point> path = new List<Point>();
-
-	// 	foreach (Point p in localPoints) p.visited = false;
-
-	// 	Point _currentPoint = start;
-
-	// 	int maxSteps = 100;
-	// 	int currentStep = 0;
-
-	// 	while (_currentPoint != target || currentStep <= maxSteps)
-	// 	{
-	// 		path.Add(_currentPoint);
-
-	// 		currentStep++;
-	// 		_currentPoint.visited = true;
-			
-	// 		Point _closestNeighbor = null;
-	// 		float shortestDistance = float.MaxValue;
-
-	// 		foreach (Point n in _currentPoint.neighbors)
-	// 		{
-	// 			if (n.visited || n == null) continue;
-
-	// 			float distance = _currentPoint.GlobalPosition.DistanceTo(n.GlobalPosition);
-
-	// 			if (n == target)
-	// 			{
-	// 				_closestNeighbor = n;
-	// 				break;
-	// 			}
-
-	// 			if (distance < shortestDistance)
-	// 			{
-	// 				shortestDistance = distance;
-	// 				_closestNeighbor = n;
-	// 			}
-	// 		}
-
-	// 		if (_closestNeighbor == null)
-	// 		{
-	// 			GD.Print("No path");
-	// 			return null;
-	// 		}
-
-	// 		_currentPoint = _closestNeighbor;
-
-	// 		if (_currentPoint == target)
-    //     	{
-    //         	path.Add(target);
-    //         	break;
-    //     	}
-	// 	}
-
-	// 	return path;
-	// }
-
 	private void PatrolState(double delta)
 	{
 		if (!isMoving && !isWaiting) 
@@ -184,7 +78,7 @@ public partial class HomeOwner : CharacterBody2D
 			int r = randomGenerator.RandiRange(0, AStar.starPoints.Count - 1);
 			targetPoint = AStar.starPoints[r];
 
-			if (targetPoint == currentPoint) return; 
+			if (currentPoint == null && targetPoint == null || targetPoint == currentPoint) return;
 
 			path = AStar.GetPath(currentPoint.GlobalPosition, targetPoint.GlobalPosition);
 
@@ -267,6 +161,52 @@ public partial class HomeOwner : CharacterBody2D
 		return closestPoint;
 	}
 
+	public override void _Ready()
+    {
+		randomGenerator = new RandomNumberGenerator();
+
+		debugLight.Enabled = false;
+
+		AStar.floorLayer = floor;
+		AStar.CreatePoints();
+
+		currentPoint = AStar.starPoints[12];
+
+		GlobalPosition = currentPoint.GlobalPosition;
+	}
+
+	public override void _Draw()
+    {
+		// Dot map
+		if (debugMode)
+		{
+			foreach (var p in AStar.starPoints) {
+				Vector2 pointPos = ToLocal(p.GlobalPosition);
+				DrawCircle(pointPos, 3.5f, Colors.Red, true);
+
+				foreach (Point n in p.neighbors) {
+					
+					if (n != null)
+						DrawLine(pointPos, ToLocal(n.GlobalPosition), Colors.Red, 0.5f, true);
+				}
+			}
+
+			// Path to target
+			if (path != null)
+			{
+				for (int i = path.Count - 1; i >= 0; i--)
+				{
+					Vector2 origin = ToLocal(path[i].GlobalPosition);
+
+					DrawCircle(origin, 3.5f, Colors.Green, true);
+
+					if (i > 0)
+						DrawLine(origin, ToLocal(path[i - 1].GlobalPosition), Colors.Green, 0.5f, true);
+				}	
+			}	
+		}
+    }
+
     public override void _Process(double delta)
     {
 
@@ -306,8 +246,3 @@ public partial class HomeOwner : CharacterBody2D
 		else PatrolState(delta);
     }
 }
-
-
-
-
-

@@ -5,31 +5,8 @@ using System.Linq;
 
 public partial class AStartPoints : Node2D
 {
-
 	public TileMapLayer floorLayer;
-
 	public List<Point> starPoints = new List<Point>();
-
-	private void ConnectNeighbors()
-	{
-		foreach (Point p in starPoints)
-		{
-			List<Point> neighboringPoints = new List<Point>();
-
-			foreach (Point n in starPoints)
-			{
-				if (p == n) continue;
-
-				float distance = p.GlobalPosition.DistanceTo(n.GlobalPosition);
-				
-				if (distance < 23.0f) neighboringPoints.Add(n);
-			}
-
-			p.neighbors = neighboringPoints.ToArray();
-		}
-		
-		GD.Print("AStar Neighbors connected");
-	}
 
 	public void CreatePoints()
 	{
@@ -51,6 +28,26 @@ public partial class AStartPoints : Node2D
 		ConnectNeighbors();
 	}
 
+	private void ConnectNeighbors()
+	{
+		foreach (Point p in starPoints)
+		{
+			List<Point> neighboringPoints = new List<Point>();
+
+			foreach (Point n in starPoints)
+			{
+				if (p == n) continue;
+
+				float distance = p.GlobalPosition.DistanceTo(n.GlobalPosition);
+				
+				if (distance < 23.0f) neighboringPoints.Add(n);
+			}
+
+			p.neighbors = neighboringPoints.ToArray();
+		}
+		
+		GD.Print("AStar Neighbors connected");
+	}
 
 	public List<Point> GetPath(Vector2 startWorldPos, Vector2 endWorldPos)
 	{
@@ -130,12 +127,12 @@ public partial class AStartPoints : Node2D
 		return closest;
 	}
 
-	private static List<Point> ReconstructPath(Dictionary<Point, Point> cameFrom, Point current)
+	private static List<Point> ReconstructPath(Dictionary<Point, Point> from, Point current)
 	{
 		List<Point> totalPath = new List<Point> { current };
-		while (cameFrom.ContainsKey(current))
+		while (from.ContainsKey(current))
 		{
-			current = cameFrom[current];
+			current = from[current];
 			totalPath.Insert(0, current);
 		}
 		return totalPath;
