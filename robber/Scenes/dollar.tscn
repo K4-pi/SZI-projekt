@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c3faokhr0vync"]
+
+[ext_resource type="Script" uid="uid://oth05bd4r3bd" path="res://Scripts/Dollar.cs" id="1_i6hiw"]
+[ext_resource type="Texture2D" uid="uid://dltaojkfj227t" path="res://Assets/dollar.png" id="2_kkvr3"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_i6hiw"]
+light_mode = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ssxtp"]
+size = Vector2(16, 11)
+
+[node name="Dollar" type="Area2D" unique_id=1774393888 node_paths=PackedStringArray("collision", "audio")]
+scale = Vector2(0.7, 0.7)
+script = ExtResource("1_i6hiw")
+collision = NodePath("CollisionShape2D")
+audio = NodePath("")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1421644960]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_i6hiw")
+texture = ExtResource("2_kkvr3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1093783514]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_ssxtp")

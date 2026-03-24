@@ -10,7 +10,7 @@ radius = 5.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6t5aa"]
 polygon = PackedVector2Array(6, 9, -3, 4, -7, 0, -3, -4, 6, -8, -4, 0)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1319846753]
+[node name="player" type="CharacterBody2D" unique_id=1319846753 groups=["player"]]
 script = ExtResource("1_cvnsp")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=904693894]

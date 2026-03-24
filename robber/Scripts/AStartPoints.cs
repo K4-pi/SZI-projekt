@@ -28,7 +28,7 @@ public partial class AStartPoints : Node2D
 		ConnectNeighbors();
 	}
 
-	private void ConnectNeighbors()
+	public void ConnectNeighbors()
 	{
 		foreach (Point p in starPoints)
 		{
