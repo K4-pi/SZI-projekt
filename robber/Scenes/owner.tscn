@@ -38,7 +38,7 @@ metadata/_edit_lock_ = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="View" unique_id=1176655461]
 position = Vector2(1, 0)
-polygon = PackedVector2Array(0, 0, 37, 58, 94, 58, 94, 29, 94, 0, 94, -25, 94, -49, 43, -49)
+polygon = PackedVector2Array(0, 0, 37, 58, 198, 58, 198, 29, 198, -1, 198, -49, 94, -49, 43, -49)
 
 [node name="RayToPlayer" type="RayCast2D" parent="." unique_id=1935102908]
 target_position = Vector2(0, 25)

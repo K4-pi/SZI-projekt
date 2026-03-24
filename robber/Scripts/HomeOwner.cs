@@ -16,7 +16,7 @@ public partial class HomeOwner : CharacterBody2D
 
 	private RandomNumberGenerator randomGenerator;
     
-	private List<Point> path = new List<Point>();
+	private List<Point> path;
 	private Point currentPoint;
 	private Point targetPoint;
 	private Point nextPoint = null;
@@ -25,16 +25,16 @@ public partial class HomeOwner : CharacterBody2D
 	private bool isMoving = false;
 	private bool isWaiting = false;
 	private bool isChasing = false;
-	private bool recoverPath = false;
+	private bool lostPlayer = false;
 
 	[Export] public float Speed = 30.0f;
-    [Export] public float ArrivalTolerance = 0.75f; // How close counts as "arrived"
+    [Export] public float ArrivalTolerance = 0.75f; // How close to count as "arrived" to point
 
     public void MoveTo(Vector2 targetGlobalPos, double delta)
     {
 		float speed = Speed;
 
-		if (isChasing) speed *= 1.5f;
+		if (isChasing) speed *= 2.0f;
 
         Vector2 direction = GlobalPosition.DirectionTo(targetGlobalPos);
 
@@ -133,45 +133,44 @@ public partial class HomeOwner : CharacterBody2D
 
 		MoveTo(nextPoint.GlobalPosition, delta);
 
-		// Optional: Update currentPoint for when the chase ends
 		if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
 		{
 			currentPoint = nextPoint;
 		}
 	}
 
-	private Point GetClosestPoint(Vector2 target)
-	{
-		Point closestPoint = null;
-		float closestDistance = float.MaxValue;
-
-		foreach (var p in AStar.starPoints)
-		{
-			float distance = target.DistanceTo(p.GlobalPosition);
-
-			if (distance < 10.0f)
-			{
-				if (distance < closestDistance)
-				{
-					closestPoint = p;
-					closestDistance = distance;
-				}
-			}
-		}
-
-		return closestPoint;
-	}
+	// Chyba już nie potrzbene ale zostaje dla bezpieczeństwa
+	//
+	// private Point GetClosestPoint(Vector2 target)
+	// {
+	// 	Point closestPoint = null;
+	// 	float closestDistance = float.MaxValue;
+	// 	foreach (var p in AStar.starPoints)
+	// 	{
+	// 		float distance = target.DistanceTo(p.GlobalPosition);
+	// 		if (distance < 10.0f)
+	// 		{
+	// 			if (distance < closestDistance)
+	// 			{
+	// 				closestPoint = p;
+	// 				closestDistance = distance;
+	// 			}
+	// 		}
+	// 	}
+	// 	return closestPoint;
+	// }
 
 	public override void _Ready()
     {
 		randomGenerator = new RandomNumberGenerator();
+		path = new List<Point>();
 
 		debugLight.Enabled = false;
 
 		AStar.floorLayer = floor;
 		AStar.CreatePoints();
 
-		currentPoint = AStar.starPoints[12];
+		currentPoint = AStar.starPoints[12]; // Placeholder spawnpoint
 
 		GlobalPosition = currentPoint.GlobalPosition;
 	}
@@ -230,6 +229,7 @@ public partial class HomeOwner : CharacterBody2D
 		rayToPlayer.TargetPosition = ToLocal(_player.Position);
 		rayToPlayer.ForceRaycastUpdate();
 
+		// CHASE
 		if (bodies.Contains(_player) && rayToPlayer.GetCollider() == _player)
 		{	
 			ChaseState(delta);
@@ -237,16 +237,29 @@ public partial class HomeOwner : CharacterBody2D
 			isWaiting = false;
 			
 			isChasing = true;
-			recoverPath = true;	
+			lostPlayer = true;	
 		}
-		else if (recoverPath)
+		else if (lostPlayer) // POST CHASE (lost player)
 		{
-			currentPoint = GetClosestPoint(GlobalPosition);
-			recoverPath = false;
-			isChasing = false;
+			targetPoint = path[path.Count - 1];
+			MoveTo(nextPoint.GlobalPosition, delta);
 
-			StartWait(2.5f);
+			if (currentPoint == targetPoint)
+			{
+				// currentPoint = GetClosestPoint(GlobalPosition);
+				lostPlayer = false;
+				isChasing = false;
+			}
+			else if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
+			{
+				int localIndex = path.IndexOf(nextPoint);
+
+				currentPoint = nextPoint;
+				
+				if (localIndex < path.Count - 1) nextPoint = path[localIndex + 1];
+				else nextPoint = targetPoint;
+			}
 		}
-		else PatrolState(delta);
+		else PatrolState(delta); // PATROL
     }
 }
