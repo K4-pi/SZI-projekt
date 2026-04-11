@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c3wmipsl57s15" path="res://Scripts/HomeOwner.cs" id="1_efvol"]
 [ext_resource type="Texture2D" uid="uid://dhimeg7uwrmmr" path="res://Assets/enemy_nromal.png" id="2_efvol"]
+[ext_resource type="AudioStream" uid="uid://cly7d326qarl3" path="res://Sounds/wood_step.mp3" id="3_1r321"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_efvol"]
 light_mode = 2
@@ -12,10 +13,13 @@ radius = 4.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_efvol"]
 polygon = PackedVector2Array(-2, -2, -2, 2, 1, 2, 1, -2)
 
-[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("viewArea", "rayToPlayer")]
+[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "audioSource", "viewArea", "rayToPlayer", "stairsPoints")]
 script = ExtResource("1_efvol")
+expensiveItems = []
+audioSource = NodePath("Sounds")
 viewArea = NodePath("View")
 rayToPlayer = NodePath("RayToPlayer")
+stairsPoints = []
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=656275635]
@@ -43,3 +47,8 @@ polygon = PackedVector2Array(0, 0, 37, 58, 198, 58, 198, 29, 198, -1, 198, -49, 
 
 [node name="RayToPlayer" type="RayCast2D" parent="." unique_id=1935102908]
 target_position = Vector2(0, 25)
+
+[node name="Sounds" type="AudioStreamPlayer2D" parent="." unique_id=1976940115]
+stream = ExtResource("3_1r321")
+volume_db = -10.0
+max_distance = 200.0

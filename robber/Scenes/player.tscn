@@ -31,5 +31,4 @@ height = 50.0
 position = Vector2(2, 0)
 occluder = SubResource("OccluderPolygon2D_6t5aa")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=290759669]
-zoom = Vector2(3.5, 3.5)
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=523566909]

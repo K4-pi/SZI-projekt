@@ -3,11 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://cdgw1j74roeym" path="res://Scenes/player.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cfroj2cju6h16" path="res://Scenes/owner.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://c3faokhr0vync" path="res://Scenes/dollar.tscn" id="6_21xkr"]
+[ext_resource type="Script" uid="uid://c1q1vagrdh5h8" path="res://Scripts/PlayerView.cs" id="6_jkdf5"]
 [ext_resource type="Texture2D" uid="uid://bffnvhabfj238" path="res://Assets/light_texture.png" id="7_6bp64"]
 [ext_resource type="Script" uid="uid://bk8xj863vyehm" path="res://Scripts/AStartPoints.cs" id="7_344ge"]
 [ext_resource type="Texture2D" uid="uid://2jfueqvy1agu" path="res://Assets/house_tileset.png" id="8_344ge"]
+[ext_resource type="AudioStream" uid="uid://eyb2nbx5fmdl" path="res://Sounds/backpack_zip.mp3" id="8_wsu2k"]
 [ext_resource type="AudioStream" uid="uid://o5agj5c68t00" path="res://Sounds/paper_money_sound.mp3" id="8_ynf5e"]
-[ext_resource type="Script" uid="uid://c5x7gvoysxy57" path="res://Scripts/AudioStreamPlayer.cs" id="9_hptm8"]
 [ext_resource type="PackedScene" uid="uid://bcmjdcxh8vg1b" path="res://Scenes/tv.tscn" id="10_6iyac"]
 [ext_resource type="PackedScene" uid="uid://k4k4vej68ixc" path="res://Scenes/smartphone.tscn" id="10_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://de383dtdiqcgi" path="res://Scenes/stairs.tscn" id="10_hptm8"]
@@ -354,7 +355,7 @@ metadata/_edit_lock_ = true
 [node name="home_owner" parent="." unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "debugLight", "floor", "_player", "stairsPoints") instance=ExtResource("5_kry3j")]
 position = Vector2(164, 92)
 dollarScene = ExtResource("6_21xkr")
-expensiveItems = [NodePath("../smartphone"), NodePath("../tv"), NodePath("../ring"), NodePath("../suitcase")]
+expensiveItems = [NodePath("../ExpensiveItems/smartphone"), NodePath("../ExpensiveItems/tv"), NodePath("../ExpensiveItems/ring"), NodePath("../ExpensiveItems/suitcase")]
 debugLight = NodePath("../DebugLight")
 floor = NodePath("../NewHouse/FloorLayer")
 _player = NodePath("../player")
@@ -368,6 +369,41 @@ metadata/_edit_lock_ = true
 position = Vector2(664, 160)
 metadata/_edit_lock_ = true
 
+[node name="PlayerManager" type="Node" parent="." unique_id=1723852406]
+
+[node name="PlayerView" type="Camera2D" parent="PlayerManager" unique_id=1324301899 node_paths=PackedStringArray("expensiveItemSound", "dollarSound", "player", "pointsLabel")]
+zoom = Vector2(3.5, 3.5)
+script = ExtResource("6_jkdf5")
+expensiveItemSound = NodePath("../ExpensiveItemSound")
+dollarSound = NodePath("../DollarSound")
+player = NodePath("../../player")
+pointsLabel = NodePath("UI/Score")
+
+[node name="UI" type="Control" parent="PlayerManager/PlayerView" unique_id=140790720]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 9.0
+offset_top = -2.0
+offset_right = 49.0
+offset_bottom = 38.0
+
+[node name="Score" type="Label" parent="PlayerManager/PlayerView/UI" unique_id=307386706]
+layout_mode = 0
+offset_left = -164.0
+offset_top = 69.0
+offset_right = -124.0
+offset_bottom = 92.0
+text = "Score: "
+
+[node name="ExpensiveItemSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=1461299490]
+stream = ExtResource("8_wsu2k")
+volume_db = -10.0
+
+[node name="DollarSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=204312005]
+stream = ExtResource("8_ynf5e")
+volume_db = -10.0
+
 [node name="DebugLight" type="PointLight2D" parent="." unique_id=476575930]
 position = Vector2(79, 56)
 texture = ExtResource("7_6bp64")
@@ -377,11 +413,6 @@ metadata/_edit_lock_ = true
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=237580471]
 position = Vector2(24, 25)
 metadata/_edit_lock_ = true
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=204312005 node_paths=PackedStringArray("valuableItems")]
-stream = ExtResource("8_ynf5e")
-script = ExtResource("9_hptm8")
-valuableItems = NodePath("../ValuablesItems")
 
 [node name="parter_basment" parent="." unique_id=195251168 node_paths=PackedStringArray("mainNeighbor") instance=ExtResource("10_hptm8")]
 position = Vector2(-40, 104)
@@ -393,18 +424,20 @@ position = Vector2(-40, 168)
 mainNeighbor = NodePath("../parter_basment")
 metadata/_edit_lock_ = true
 
-[node name="tv" parent="." unique_id=1426753947 instance=ExtResource("10_6iyac")]
+[node name="ExpensiveItems" type="Node" parent="." unique_id=591956970]
+
+[node name="tv" parent="ExpensiveItems" unique_id=1426753947 instance=ExtResource("10_6iyac")]
 position = Vector2(456, -112)
 metadata/_edit_lock_ = true
 
-[node name="smartphone" parent="." unique_id=503625773 instance=ExtResource("10_d1ilt")]
+[node name="smartphone" parent="ExpensiveItems" unique_id=503625773 instance=ExtResource("10_d1ilt")]
 position = Vector2(536, 136)
 metadata/_edit_lock_ = true
 
-[node name="ring" parent="." unique_id=1006506046 instance=ExtResource("12_fdnlq")]
+[node name="ring" parent="ExpensiveItems" unique_id=1006506046 instance=ExtResource("12_fdnlq")]
 position = Vector2(624, -152)
 metadata/_edit_lock_ = true
 
-[node name="suitcase" parent="." unique_id=355721031 instance=ExtResource("13_jkdf5")]
+[node name="suitcase" parent="ExpensiveItems" unique_id=355721031 instance=ExtResource("13_jkdf5")]
 position = Vector2(720, 72)
 metadata/_edit_lock_ = true

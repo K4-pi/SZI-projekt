@@ -3,11 +3,22 @@
 [ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_vmgqk"]
 [ext_resource type="Texture2D" uid="uid://cwa3ettq452kl" path="res://Assets/suitcase.png" id="2_wm4ga"]
 
-[node name="suitcase" type="Node2D" unique_id=355721031]
+[sub_resource type="CircleShape2D" id="CircleShape2D_vmgqk"]
+radius = 16.0
+
+[node name="suitcase" type="Node2D" unique_id=355721031 node_paths=PackedStringArray("pickupArea", "audioPlayer")]
 script = ExtResource("1_vmgqk")
+pickupArea = NodePath("PickUpArea")
 itemValue = 25.0
 rotate = true
+audioPlayer = NodePath("")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1694494566]
 texture_filter = 1
 texture = ExtResource("2_wm4ga")
+
+[node name="PickUpArea" type="Area2D" parent="." unique_id=1236594144]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpArea" unique_id=487949440]
+shape = SubResource("CircleShape2D_vmgqk")
+debug_color = Color(0.97505087, 0, 0.42576468, 0.41960785)

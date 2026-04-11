@@ -11,6 +11,8 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] public PackedScene dollarScene;
 	[Export] public Node[] expensiveItems;
 
+	[Export] public AudioStreamPlayer2D audioSource;
+
 	[Export] PointLight2D debugLight;
 	[Export] Area2D viewArea;
 	[Export] TileMapLayer floor;
@@ -64,6 +66,8 @@ public partial class HomeOwner : CharacterBody2D
     	Rotation = (float)Mathf.LerpAngle(Rotation, targetAngle, rotationSpeed * delta);
 
         MoveAndSlide();
+
+		
     }
 
 	private async void StartWait(float seconds)
@@ -248,6 +252,13 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _Process(double delta)
     {
+		QueueRedraw();
+
+		if (isChasing) audioSource.PitchScale = 2.0f;
+		else audioSource.PitchScale = 1.0f;
+
+		if (!audioSource.Playing && (isMoving || isChasing)) audioSource.Play();
+		else if (audioSource.Playing && !(isMoving || isChasing)) audioSource.Stop();
 
         if (Input.IsActionJustPressed("toggle_debug"))
 		{
@@ -261,8 +272,6 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-		QueueRedraw();
-
 		var bodies = viewArea.GetOverlappingBodies();
 
 		rayToPlayer.TargetPosition = ToLocal(_player.Position);

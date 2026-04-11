@@ -3,12 +3,23 @@
 [ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_tl1pa"]
 [ext_resource type="Texture2D" uid="uid://bl5yxabr47nfo" path="res://Assets/smartphone.png" id="2_viw38"]
 
-[node name="smartphone" type="Node2D" unique_id=503625773]
+[sub_resource type="CircleShape2D" id="CircleShape2D_tl1pa"]
+radius = 16.0
+
+[node name="smartphone" type="Node2D" unique_id=503625773 node_paths=PackedStringArray("pickupArea", "audioPlayer")]
 script = ExtResource("1_tl1pa")
+pickupArea = NodePath("PickUpArea")
 itemValue = 10.0
 rotate = true
+audioPlayer = NodePath("")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=425580578]
 texture_filter = 1
 position = Vector2(1, 2)
 texture = ExtResource("2_viw38")
+
+[node name="PickUpArea" type="Area2D" parent="." unique_id=1514622704]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpArea" unique_id=1759302701]
+shape = SubResource("CircleShape2D_tl1pa")
+debug_color = Color(0.97505087, 0, 0.42576468, 0.41960785)

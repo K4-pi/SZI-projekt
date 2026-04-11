@@ -24,6 +24,7 @@ public partial class Dollar : Area2D
 			if (o is Player player)
 			{
 				GD.Print($"Player collected money");
+				EventBus.Instance.EmitSignal(EventBus.SignalName.OnItemPickUp, 1.0f, "dollar");
 				QueueFree();
 			}
 		}
