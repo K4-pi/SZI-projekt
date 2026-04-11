@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bcmjdcxh8vg1b"]
+
+[ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_emhpc"]
+[ext_resource type="Texture2D" uid="uid://bin2k7w7ild8f" path="res://Assets/tv.png" id="2_q80sk"]
+
+[node name="tv" type="Node2D" unique_id=1426753947]
+script = ExtResource("1_emhpc")
+itemValue = 50.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=602351582]
+texture_filter = 1
+texture = ExtResource("2_q80sk")

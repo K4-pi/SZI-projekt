@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dyuhrb8r71arj"]
+
+[ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_vmgqk"]
+[ext_resource type="Texture2D" uid="uid://cwa3ettq452kl" path="res://Assets/suitcase.png" id="2_wm4ga"]
+
+[node name="suitcase" type="Node2D" unique_id=355721031]
+script = ExtResource("1_vmgqk")
+itemValue = 25.0
+rotate = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1694494566]
+texture_filter = 1
+texture = ExtResource("2_wm4ga")

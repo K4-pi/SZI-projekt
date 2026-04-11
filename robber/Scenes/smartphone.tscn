@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://k4k4vej68ixc"]
+
+[ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_tl1pa"]
+[ext_resource type="Texture2D" uid="uid://bl5yxabr47nfo" path="res://Assets/smartphone.png" id="2_viw38"]
+
+[node name="smartphone" type="Node2D" unique_id=503625773]
+script = ExtResource("1_tl1pa")
+itemValue = 10.0
+rotate = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=425580578]
+texture_filter = 1
+position = Vector2(1, 2)
+texture = ExtResource("2_viw38")

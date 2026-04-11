@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://fd7pehavj0uu"]
+
+[ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_hvk7o"]
+[ext_resource type="Texture2D" uid="uid://c1spd7xjvt40f" path="res://Assets/ring.png" id="2_4cumv"]
+
+[node name="ring" type="Node2D" unique_id=1006506046]
+script = ExtResource("1_hvk7o")
+itemValue = 75.0
+rotate = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=926410422]
+texture_filter = 1
+texture = ExtResource("2_4cumv")

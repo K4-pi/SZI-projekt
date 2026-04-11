@@ -8,14 +8,21 @@ public partial class HomeOwner : CharacterBody2D
 
 	private AStartPoints AStar = new AStartPoints();
 
+	[Export] public PackedScene dollarScene;
+	[Export] public Node[] expensiveItems;
+
 	[Export] PointLight2D debugLight;
 	[Export] Area2D viewArea;
 	[Export] TileMapLayer floor;
 	[Export] Node2D _player;
 	[Export] RayCast2D rayToPlayer;
+	[Export] Node2D[] stairsPoints;
 
 	private RandomNumberGenerator randomGenerator;
-    
+
+	private Node itemsParent;
+
+	private List<Point> patrolPoints; // Points near expensive items
 	private List<Point> path;
 	private Point currentPoint;
 	private Point targetPoint;
@@ -74,10 +81,10 @@ public partial class HomeOwner : CharacterBody2D
 	{
 		if (!isMoving && !isWaiting) 
 		{
-			if (AStar.starPoints.Count <= 0) return;
+			if (patrolPoints.Count <= 0) return;
 
-			int r = randomGenerator.RandiRange(0, AStar.starPoints.Count - 1);
-			targetPoint = AStar.starPoints[r];
+			int r = randomGenerator.RandiRange(0, patrolPoints.Count - 1);
+			targetPoint = patrolPoints[r]; 
 
 			if (currentPoint == null && targetPoint == null || targetPoint == currentPoint) return;
 
@@ -139,40 +146,62 @@ public partial class HomeOwner : CharacterBody2D
 		}
 	}
 
-	// Chyba już nie potrzbene ale zostaje dla bezpieczeństwa
-	//
-	// private Point GetClosestPoint(Vector2 target)
-	// {
-	// 	Point closestPoint = null;
-	// 	float closestDistance = float.MaxValue;
-	// 	foreach (var p in AStar.starPoints)
-	// 	{
-	// 		float distance = target.DistanceTo(p.GlobalPosition);
-	// 		if (distance < 10.0f)
-	// 		{
-	// 			if (distance < closestDistance)
-	// 			{
-	// 				closestPoint = p;
-	// 				closestDistance = distance;
-	// 			}
-	// 		}
-	// 	}
-	// 	return closestPoint;
-	// }
-
 	public override void _Ready()
     {
 		randomGenerator = new RandomNumberGenerator();
 		path = new List<Point>();
+		patrolPoints = new List<Point>();
 
 		debugLight.Enabled = false;
 
 		AStar.floorLayer = floor;
-		AStar.CreatePoints();
+		AStar.CreatePoints(stairsPoints);
 
 		currentPoint = AStar.starPoints[12]; // Placeholder spawnpoint
 
 		GlobalPosition = currentPoint.GlobalPosition;
+
+		itemsParent = GetNode<Node>("/root/Main/ValuablesItems");
+
+		CreateItems(AStar.starPoints, 10);
+	}
+
+	private void CreateItems(List<Point> points, int itemsCount)
+	{
+		RandomNumberGenerator randomGenerator = new RandomNumberGenerator();
+
+		GD.Print("Creating items");
+
+		for (int i = 0; i < itemsCount; i++)
+		{
+			int pointIndex = randomGenerator.RandiRange(0, points.Count - 1);
+
+			Node2D itemInstance = dollarScene.Instantiate<Node2D>(); 
+
+			itemsParent.AddChild(itemInstance);
+
+			itemInstance.Position = points[pointIndex].GlobalPosition; 
+		}
+
+		foreach (var item in expensiveItems)
+		{
+			if (item is Item it)
+			{
+				it.GenerateClosestPoint(AStar.starPoints);
+
+				Point p = it.closestPoint;
+				if (p != null)
+				{
+					float value = it.itemValue;
+
+					// Simple probability of getting item
+					for (float i = 0.0f; i < value; i++)
+					{
+						patrolPoints.Add(p);				
+					}
+				} 
+			}
+		}
 	}
 
 	public override void _Draw()
@@ -204,6 +233,16 @@ public partial class HomeOwner : CharacterBody2D
 						DrawLine(origin, ToLocal(path[i - 1].GlobalPosition), Colors.Green, 0.5f, true);
 				}	
 			}	
+
+			if (patrolPoints.Count > 0)
+			{
+				foreach (var p in patrolPoints)
+				{
+					Vector2 origin = ToLocal(p.GlobalPosition);
+
+					DrawCircle(origin, 4.0f, Colors.Yellow, true);
+				}
+			}
 		}
     }
 
@@ -218,7 +257,7 @@ public partial class HomeOwner : CharacterBody2D
 
 		if (debugMode) debugLight.Enabled = true;
 		else debugLight.Enabled = false;
-    }
+	}
 
     public override void _PhysicsProcess(double delta)
     {

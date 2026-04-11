@@ -2,12 +2,15 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 public partial class AStartPoints : Node2D
 {
 	public TileMapLayer floorLayer;
-	public List<Point> starPoints = new List<Point>();
+	public TileMapLayer stairsLayer;
 
+	public List<Point> starPoints;
+	
 	public void CreatePoints()
 	{
 		starPoints = new List<Point>();
@@ -24,14 +27,67 @@ public partial class AStartPoints : Node2D
 
 			starPoints.Add(newPoint);
 		}
-		
+
+		ConnectNeighbors();
+	}
+
+	public void CreatePoints(Node2D[] stairsNodes)
+	{
+		starPoints = new List<Point>();
+		var cells = floorLayer.GetUsedCells();
+
+		foreach (Vector2I cell in cells)
+		{
+			Point newPoint = new Point(); 
+
+			Vector2 worldPos = floorLayer.ToGlobal(floorLayer.MapToLocal(cell));
+			newPoint.Setup(worldPos);
+
+			AddChild(newPoint);
+
+			starPoints.Add(newPoint);
+		}
+
+		if (stairsNodes.Length > 0)
+		{
+			GD.Print("Creating stairs points");
+			StairsPoints[] stairsPoints = stairsNodes
+										.Cast<StairsPoints>()
+										.ToArray();
+
+			// create stairs points 
+			Dictionary<StairsPoints, Point> spToPoint = new();
+			foreach (StairsPoints sp in stairsPoints)
+			{
+				Point newPoint = new Point();
+				Vector2 worldPos = sp.GlobalPosition;
+				newPoint.Setup(worldPos);
+				AddChild(newPoint);
+				starPoints.Add(newPoint);
+				spToPoint[sp] = newPoint;
+			}
+
+			// connect MAIN neighbor which is next stairs 
+			foreach (StairsPoints sp in stairsPoints)
+			{
+				if (sp.mainNeighbor != null && spToPoint.ContainsKey(sp.mainNeighbor))
+				{
+					spToPoint[sp].neighbors.Add(spToPoint[sp.mainNeighbor]);
+				}
+			}
+		}
+		else GD.Print("Stairs list is empty");
+
 		ConnectNeighbors();
 	}
 
 	public void ConnectNeighbors()
 	{
+
 		foreach (Point p in starPoints)
 		{
+			// p.neighbors = new List<Point>();
+
 			List<Point> neighboringPoints = new List<Point>();
 
 			foreach (Point n in starPoints)
@@ -43,7 +99,7 @@ public partial class AStartPoints : Node2D
 				if (distance < 23.0f) neighboringPoints.Add(n);
 			}
 
-			p.neighbors = neighboringPoints.ToArray();
+			p.neighbors.AddRange(neighboringPoints);
 		}
 		
 		GD.Print("AStar Neighbors connected");

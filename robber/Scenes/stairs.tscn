@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://de383dtdiqcgi"]
+
+[ext_resource type="Texture2D" uid="uid://bble2y2yc7jdd" path="res://Assets/icon.svg" id="1_aiuvb"]
+[ext_resource type="Script" uid="uid://nclptvgatep1" path="res://Scripts/StairsPoints.cs" id="1_qbift"]
+
+[node name="stairs" type="Node2D" unique_id=973917311]
+script = ExtResource("1_qbift")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1414486128]
+visible = false
+texture_filter = 1
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("1_aiuvb")
+metadata/_edit_lock_ = true
