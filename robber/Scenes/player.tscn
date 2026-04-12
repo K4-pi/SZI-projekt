@@ -22,9 +22,11 @@ texture = ExtResource("2_cvnsp")
 shape = SubResource("CircleShape2D_vgqql")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1113765815]
+position = Vector2(-0.80000687, 0)
+scale = Vector2(0.99107146, 1)
 shadow_enabled = true
 texture = ExtResource("3_6t5aa")
-texture_scale = 0.35
+texture_scale = 0.5
 height = 50.0
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=617323596]

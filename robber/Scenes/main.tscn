@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://2jfueqvy1agu" path="res://Assets/house_tileset.png" id="8_344ge"]
 [ext_resource type="AudioStream" uid="uid://eyb2nbx5fmdl" path="res://Sounds/backpack_zip.mp3" id="8_wsu2k"]
 [ext_resource type="AudioStream" uid="uid://o5agj5c68t00" path="res://Sounds/paper_money_sound.mp3" id="8_ynf5e"]
+[ext_resource type="AudioStream" uid="uid://pkei3pmwbtem" path="res://Sounds/gameover_sound.mp3" id="9_wsu2k"]
 [ext_resource type="PackedScene" uid="uid://bcmjdcxh8vg1b" path="res://Scenes/tv.tscn" id="10_6iyac"]
 [ext_resource type="PackedScene" uid="uid://k4k4vej68ixc" path="res://Scenes/smartphone.tscn" id="10_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://de383dtdiqcgi" path="res://Scenes/stairs.tscn" id="10_hptm8"]
@@ -352,10 +353,11 @@ metadata/_edit_lock_ = true
 [node name="ValuablesItems" type="Node2D" parent="." unique_id=1724137246]
 metadata/_edit_lock_ = true
 
-[node name="home_owner" parent="." unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "debugLight", "floor", "_player", "stairsPoints") instance=ExtResource("5_kry3j")]
+[node name="home_owner" parent="." unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "gameOverSource", "debugLight", "floor", "_player", "stairsPoints") instance=ExtResource("5_kry3j")]
 position = Vector2(164, 92)
 dollarScene = ExtResource("6_21xkr")
 expensiveItems = [NodePath("../ExpensiveItems/smartphone"), NodePath("../ExpensiveItems/tv"), NodePath("../ExpensiveItems/ring"), NodePath("../ExpensiveItems/suitcase")]
+gameOverSource = NodePath("../PlayerManager/GameOverSound")
 debugLight = NodePath("../DebugLight")
 floor = NodePath("../NewHouse/FloorLayer")
 _player = NodePath("../player")
@@ -390,11 +392,11 @@ offset_bottom = 38.0
 
 [node name="Score" type="Label" parent="PlayerManager/PlayerView/UI" unique_id=307386706]
 layout_mode = 0
-offset_left = -164.0
-offset_top = 69.0
-offset_right = -124.0
-offset_bottom = 92.0
-text = "Score: "
+offset_left = -273.0
+offset_top = 122.0
+offset_right = -221.0
+offset_bottom = 145.0
+text = "$: "
 
 [node name="ExpensiveItemSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=1461299490]
 stream = ExtResource("8_wsu2k")
@@ -402,6 +404,10 @@ volume_db = -10.0
 
 [node name="DollarSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=204312005]
 stream = ExtResource("8_ynf5e")
+volume_db = -10.0
+
+[node name="GameOverSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=491880160]
+stream = ExtResource("9_wsu2k")
 volume_db = -10.0
 
 [node name="DebugLight" type="PointLight2D" parent="." unique_id=476575930]

@@ -2,10 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c3wmipsl57s15" path="res://Scripts/HomeOwner.cs" id="1_efvol"]
 [ext_resource type="Texture2D" uid="uid://dhimeg7uwrmmr" path="res://Assets/enemy_nromal.png" id="2_efvol"]
+[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://see_int_light_canvas_item.tres" id="2_ucoee"]
 [ext_resource type="AudioStream" uid="uid://cly7d326qarl3" path="res://Sounds/wood_step.mp3" id="3_1r321"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_efvol"]
-light_mode = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_efvol"]
 radius = 4.0
@@ -13,18 +11,22 @@ radius = 4.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_efvol"]
 polygon = PackedVector2Array(-2, -2, -2, 2, 1, 2, 1, -2)
 
-[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "audioSource", "viewArea", "rayToPlayer", "stairsPoints")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ucoee"]
+size = Vector2(19, 16)
+
+[node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "audioSource", "viewArea", "hitBox", "rayToPlayer", "stairsPoints")]
 script = ExtResource("1_efvol")
 expensiveItems = []
 audioSource = NodePath("Sounds")
 viewArea = NodePath("View")
+hitBox = NodePath("HitBox")
 rayToPlayer = NodePath("RayToPlayer")
 stairsPoints = []
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=656275635]
 texture_filter = 1
-material = SubResource("CanvasItemMaterial_efvol")
+material = ExtResource("2_ucoee")
 position = Vector2(3, 0)
 texture = ExtResource("2_efvol")
 metadata/_edit_lock_ = true
@@ -52,3 +54,10 @@ target_position = Vector2(0, 25)
 stream = ExtResource("3_1r321")
 volume_db = -10.0
 max_distance = 200.0
+
+[node name="HitBox" type="Area2D" parent="." unique_id=241913534]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1290871692]
+position = Vector2(2.5, 0)
+shape = SubResource("RectangleShape2D_ucoee")
+debug_color = Color(0.5953751, 0.37320942, 1, 0.41960785)

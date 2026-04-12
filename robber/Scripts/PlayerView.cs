@@ -22,14 +22,14 @@ public partial class PlayerView : Camera2D
 
 		Position = player.GlobalPosition;
 
-		pointsLabel.Text = $"Score: {points}";
+		pointsLabel.Text = $"$: {points}";
 	}
 
 	private void HandleItemPickUp(float value, string audioType)
 	{
 		points += value; 
 
-		pointsLabel.Text = $"Score: {points}";
+		pointsLabel.Text = $"$: {points}";
 
 		if (audioType == "expensive") expensiveItemSound.Play();
 		else if (audioType == "dollar") dollarSound.Play();

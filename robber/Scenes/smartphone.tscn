@@ -1,20 +1,24 @@
 [gd_scene format=3 uid="uid://k4k4vej68ixc"]
 
+[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://see_int_light_canvas_item.tres" id="1_rlnxe"]
 [ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_tl1pa"]
 [ext_resource type="Texture2D" uid="uid://bl5yxabr47nfo" path="res://Assets/smartphone.png" id="2_viw38"]
+[ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/shining.png" id="3_viw38"]
+[ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://shining_process_material.tres" id="4_frxcf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tl1pa"]
 radius = 16.0
 
-[node name="smartphone" type="Node2D" unique_id=503625773 node_paths=PackedStringArray("pickupArea", "audioPlayer")]
+[node name="smartphone" type="Node2D" unique_id=503625773 node_paths=PackedStringArray("pickupArea")]
+material = ExtResource("1_rlnxe")
 script = ExtResource("1_tl1pa")
 pickupArea = NodePath("PickUpArea")
 itemValue = 10.0
 rotate = true
-audioPlayer = NodePath("")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=425580578]
+[node name="Item_sprite" type="Sprite2D" parent="." unique_id=425580578]
 texture_filter = 1
+use_parent_material = true
 position = Vector2(1, 2)
 texture = ExtResource("2_viw38")
 
@@ -23,3 +27,13 @@ texture = ExtResource("2_viw38")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpArea" unique_id=1759302701]
 shape = SubResource("CircleShape2D_tl1pa")
 debug_color = Color(0.97505087, 0, 0.42576468, 0.41960785)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=688779707]
+texture_filter = 1
+use_parent_material = true
+amount = 5
+texture = ExtResource("3_viw38")
+lifetime = 5.0
+interp_to_end = 0.2
+randomness = 1.0
+process_material = ExtResource("4_frxcf")

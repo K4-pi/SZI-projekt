@@ -12,9 +12,11 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] public Node[] expensiveItems;
 
 	[Export] public AudioStreamPlayer2D audioSource;
+	[Export] public AudioStreamPlayer gameOverSource; // Temporary
 
 	[Export] PointLight2D debugLight;
 	[Export] Area2D viewArea;
+	[Export] Area2D hitBox;
 	[Export] TileMapLayer floor;
 	[Export] Node2D _player;
 	[Export] RayCast2D rayToPlayer;
@@ -272,13 +274,29 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-		var bodies = viewArea.GetOverlappingBodies();
+		var viewBodies = viewArea.GetOverlappingBodies();
 
 		rayToPlayer.TargetPosition = ToLocal(_player.Position);
 		rayToPlayer.ForceRaycastUpdate();
 
+		var hitBodies = hitBox.GetOverlappingBodies();
+
+		if (hitBodies.Contains(_player))
+		{
+			audioSource.Stop();
+			gameOverSource.Play();
+
+			// Need to change to emit signal so player can freeze _Process(delta)
+			// _player.QueueFree();
+			_player.SetProcess(false);
+			_player.SetPhysicsProcess(false);
+
+			SetProcess(false);
+			SetPhysicsProcess(false);
+		}
+
 		// CHASE
-		if (bodies.Contains(_player) && rayToPlayer.GetCollider() == _player)
+		if (viewBodies.Contains(_player) && rayToPlayer.GetCollider() == _player)
 		{	
 			ChaseState(delta);
 			isMoving = false;

@@ -1,19 +1,23 @@
 [gd_scene format=3 uid="uid://bcmjdcxh8vg1b"]
 
+[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://see_int_light_canvas_item.tres" id="1_56o7x"]
 [ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_emhpc"]
 [ext_resource type="Texture2D" uid="uid://bin2k7w7ild8f" path="res://Assets/tv.png" id="2_q80sk"]
+[ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/shining.png" id="3_q80sk"]
+[ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://shining_process_material.tres" id="4_slduq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_emhpc"]
 radius = 16.0
 
-[node name="tv" type="Node2D" unique_id=1426753947 node_paths=PackedStringArray("pickupArea", "audioPlayer")]
+[node name="tv" type="Node2D" unique_id=1426753947 node_paths=PackedStringArray("pickupArea")]
+material = ExtResource("1_56o7x")
 script = ExtResource("1_emhpc")
 pickupArea = NodePath("PickUpArea")
 itemValue = 50.0
-audioPlayer = NodePath("")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=602351582]
 texture_filter = 1
+use_parent_material = true
 texture = ExtResource("2_q80sk")
 
 [node name="PickUpArea" type="Area2D" parent="." unique_id=1525153682]
@@ -21,3 +25,13 @@ texture = ExtResource("2_q80sk")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpArea" unique_id=1764211561]
 shape = SubResource("CircleShape2D_emhpc")
 debug_color = Color(0.97505087, 0, 0.42576468, 0.41960785)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=48872271]
+texture_filter = 1
+use_parent_material = true
+amount = 5
+texture = ExtResource("3_q80sk")
+lifetime = 5.0
+interp_to_end = 0.2
+randomness = 1.0
+process_material = ExtResource("4_slduq")
