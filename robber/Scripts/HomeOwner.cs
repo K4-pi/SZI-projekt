@@ -127,7 +127,7 @@ public partial class HomeOwner : CharacterBody2D
 						index = 0;
 						path.Clear();
 
-						if (!isWaiting) StartWait(5.0f); 
+						if (!isWaiting) StartWait(2.5f); 
 					}
 				}
 			}
@@ -169,7 +169,7 @@ public partial class HomeOwner : CharacterBody2D
 
 		itemsParent = GetNode<Node>("/root/Main/ValuablesItems");
 
-		CreateItems(AStar.starPoints, 10);
+		CreateItems(AStar.starPoints, 20);
 	}
 
 	private void CreateItems(List<Point> points, int itemsCount)

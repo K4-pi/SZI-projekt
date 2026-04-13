@@ -3,7 +3,21 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
+
+	[Export] AnimatedSprite2D playerSprite;
 	private float Speed = 50.0f;
+
+    public override void _Ready()
+    {
+		playerSprite.AnimationLooped += () => playerSprite.Stop();
+
+		playerSprite.AnimationFinished += () => playerSprite.Stop();
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("interact") && !playerSprite.IsPlaying()) playerSprite.Play("grab");
+    }
 
 	public override void _PhysicsProcess(double delta)
 	{
