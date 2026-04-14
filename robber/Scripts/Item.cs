@@ -7,24 +7,29 @@ public partial class Item : Node2D
 	public Point closestPoint {get; private set;}
 	private Area2D pickupArea;
 	private Sprite2D itemTexture;
+	private Label timeLabel;
+	
 	[Export] public float itemValue {get; private set;}
 	[Export] public bool rotate;
 
-	[Export] public Label timeLabel;
 	public double lastSeen = 0.0f;
+
+	private bool showTime;
 
     public override void _Ready()
     {
 		closestPoint = null;
+		showTime = false;
 
 		itemTexture = GetNode<Sprite2D>("Item_sprite");
 		pickupArea = GetNode<Area2D>("PickUpArea");
+		timeLabel = GetNode<Label>("time");
+
+		timeLabel.Hide();
 
         if (rotate)
 		{
 			RandomNumberGenerator rng = new RandomNumberGenerator();
-
-			// Rotate(rng.RandfRange(0.0f, 360.0f));
 
 			itemTexture.Rotate(rng.RandfRange(0.0f, 360.0f));
 		}
@@ -32,7 +37,19 @@ public partial class Item : Node2D
 
     public override void _Process(double delta)
     {
-		timeLabel.Text = $"{Mathf.RoundToInt((float)lastSeen)}";
+
+		if (Input.IsActionJustPressed("toggle_timers"))
+		{
+			if (!showTime) showTime = true;
+			else showTime = false;
+		}
+
+		if (showTime)
+		{
+			timeLabel.Show();
+			timeLabel.Text = $"{Mathf.RoundToInt((float)lastSeen)}";
+		}
+		else timeLabel.Hide();
 
 		lastSeen += delta;
 

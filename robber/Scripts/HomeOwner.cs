@@ -26,9 +26,7 @@ public partial class HomeOwner : CharacterBody2D
 
 	private Node itemsParent;
 
-	Dictionary<Point, Item> itemsAtPoints;
-
-	// private List<Point> patrolPoints; // Points near expensive items
+	Dictionary<Point, Item> itemsAtPoints; // Points near item to patrol
 	private List<Point> path;
 	private Point currentPoint;
 	private Point targetPoint;
@@ -87,12 +85,13 @@ public partial class HomeOwner : CharacterBody2D
 
 	private void PatrolState(double delta)
 	{
-		if (!isMoving && !isWaiting) 
+		if (!isMoving && !isWaiting) // Get a point to go to 
 		{
 			if (itemsAtPoints.Count <= 0) return;
 			
 			int r = randomGenerator.RandiRange(0, itemsAtPoints.Count - 1);
 			targetPoint = itemsAtPoints.Keys.ToArray<Point>()[r];
+			
 
 			if (currentPoint == null && targetPoint == null || targetPoint == currentPoint) return;
 
@@ -109,7 +108,7 @@ public partial class HomeOwner : CharacterBody2D
 			isMoving = true;
 		}
 		
-		if (isMoving && !isWaiting)
+		if (isMoving && !isWaiting) // Go to that point
 		{
 			if (index < path.Count)
 			{
@@ -160,7 +159,6 @@ public partial class HomeOwner : CharacterBody2D
     {
 		randomGenerator = new RandomNumberGenerator();
 		path = new List<Point>();
-		// patrolPoints = new List<Point>();
 
 		itemsAtPoints = new Dictionary<Point, Item>();
 
@@ -169,20 +167,26 @@ public partial class HomeOwner : CharacterBody2D
 		AStar.floorLayer = floor;
 		AStar.CreatePoints(stairsPoints);
 
-		currentPoint = AStar.starPoints[12]; // Placeholder spawnpoint
-
-		GlobalPosition = currentPoint.GlobalPosition;
-
 		itemsParent = GetNode<Node>("/root/Main/ValuablesItems");
 
 		CreateItems(AStar.starPoints, 20);
 
+		currentPoint = itemsAtPoints.Keys.ToArray<Point>()
+			[new RandomNumberGenerator().RandiRange(0, itemsAtPoints.Count - 1)]; // Spawn at one of items
+
+		GlobalPosition = currentPoint.GlobalPosition;
+		
 		EventBus.Instance.RemoveItemPoint += (Item item) =>
 		{
-			foreach (var it in itemsAtPoints)
+			if (itemsAtPoints.Count > 2) // don't remove point when there is less than 2 of them
 			{
-				if (it.Value == item) itemsAtPoints.Remove(it.Key);
-			}	
+				foreach (var it in itemsAtPoints)
+				{
+					if (it.Value == item) itemsAtPoints.Remove(it.Key);
+				}
+			}
+
+			Speed *= 1.2f; // Owner speeds up when you steal item
 		};
 	}
 
