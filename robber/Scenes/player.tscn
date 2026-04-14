@@ -118,19 +118,13 @@ animations = [{
 script = ExtResource("1_cvnsp")
 playerSprite = NodePath("Player_sprite")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=904693894]
-visible = false
-texture_filter = 1
-position = Vector2(3.9999995, 1.4210855e-14)
-texture = ExtResource("2_6t5aa")
-hframes = 13
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=447690470]
 shape = SubResource("CircleShape2D_vgqql")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1113765815]
 position = Vector2(-0.80000687, 0)
 scale = Vector2(0.99107146, 1)
+energy = 0.3
 shadow_enabled = true
 texture = ExtResource("3_6t5aa")
 texture_scale = 0.5
@@ -147,5 +141,4 @@ texture_filter = 1
 position = Vector2(4, 0)
 sprite_frames = SubResource("SpriteFrames_fd4e3")
 animation = &"grab"
-frame_progress = 0.8283723
 speed_scale = 2.5

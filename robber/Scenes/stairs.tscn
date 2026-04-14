@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://de383dtdiqcgi"]
 
-[ext_resource type="Texture2D" uid="uid://bble2y2yc7jdd" path="res://Assets/icon.svg" id="1_aiuvb"]
 [ext_resource type="Script" uid="uid://nclptvgatep1" path="res://Scripts/StairsPoints.cs" id="1_qbift"]
+[ext_resource type="Texture2D" uid="uid://r46mcr5akt82" path="res://Assets/stairs.png" id="2_qbift"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qbift"]
 size = Vector2(12, 2)
@@ -11,10 +11,9 @@ script = ExtResource("1_qbift")
 teleportArea = NodePath("Tp_area")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1414486128]
-visible = false
 texture_filter = 1
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("1_aiuvb")
+scale = Vector2(1.24, 1.24)
+texture = ExtResource("2_qbift")
 metadata/_edit_lock_ = true
 
 [node name="Tp_area" type="Area2D" parent="." unique_id=1822163065]

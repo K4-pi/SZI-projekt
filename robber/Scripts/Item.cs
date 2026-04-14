@@ -8,6 +8,7 @@ public partial class Item : Node2D
 	[Export] public Area2D pickupArea {get; private set;}
 	[Export] public float itemValue {get; private set;}
 	[Export] public bool rotate;
+	[Export] public bool isExpensive;
 
     public override void _Ready()
     {
