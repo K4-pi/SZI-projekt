@@ -88,20 +88,41 @@ public partial class HomeOwner : CharacterBody2D
 		if (!isMoving && !isWaiting) // Get a point to go to 
 		{
 			if (itemsAtPoints.Count <= 0) return;
-			
-			int r = randomGenerator.RandiRange(0, itemsAtPoints.Count - 1);
-			targetPoint = itemsAtPoints.Keys.ToArray<Point>()[r];
-			
 
-			if (currentPoint == null && targetPoint == null || targetPoint == currentPoint) return;
+			float lowestPathValue = 0f;
 
-			path = AStar.GetPath(currentPoint.GlobalPosition, targetPoint.GlobalPosition);
+			foreach (var dictObj in itemsAtPoints)
+			{
+				if (dictObj.Key == currentPoint)
+				{
+					dictObj.Value.calculatedValueLabel.Text = $"start";			
+					continue;
+				}	
+				
+				List<Point> tmpPath = AStar.GetPath(currentPoint.GlobalPosition, dictObj.Key.GlobalPosition);
+
+				float pointValue = 
+					((float)tmpPath.Count / 10f) * 
+					(dictObj.Value.itemValue / 2f) * 
+					dictObj.Value.lastSeen;
+
+				dictObj.Value.calculatedValueLabel.Text = $"{Mathf.Round(pointValue)}";
+
+				if (pointValue > lowestPathValue)
+				{
+					lowestPathValue = pointValue;
+
+					path = tmpPath;
+				}
+			}
 
 			if (path.Count <= 0) 
 			{
 				GD.Print("No path found");
 				return; 
 			}
+
+			targetPoint = path[path.Count - 1];
 
 			GD.Print($"Path to {targetPoint.Name} Length = {path.Count}");
 			index = 0; 
@@ -126,10 +147,11 @@ public partial class HomeOwner : CharacterBody2D
 						GD.Print("Path end");
 						isMoving = false;
 						index = 0;
+						
+						itemsAtPoints[currentPoint].lastSeen = 0.0f;
+						
 						path.Clear();
-
-						itemsAtPoints[targetPoint].lastSeen = 0.0f;
-
+						
 						if (!isWaiting) StartWait(2.5f); 
 					}
 				}
@@ -186,7 +208,7 @@ public partial class HomeOwner : CharacterBody2D
 				}
 			}
 
-			Speed *= 1.2f; // Owner speeds up when you steal item
+			Speed *= 1.1f; // Owner speeds up when you steal item
 		};
 	}
 
@@ -307,7 +329,6 @@ public partial class HomeOwner : CharacterBody2D
 			gameOverSource.Play();
 
 			// Need to change to emit signal so player can freeze _Process(delta)
-			// _player.QueueFree();
 			_player.SetProcess(false);
 			_player.SetPhysicsProcess(false);
 
@@ -332,7 +353,6 @@ public partial class HomeOwner : CharacterBody2D
 
 			if (currentPoint == targetPoint)
 			{
-				// currentPoint = GetClosestPoint(GlobalPosition);
 				lostPlayer = false;
 				isChasing = false;
 			}

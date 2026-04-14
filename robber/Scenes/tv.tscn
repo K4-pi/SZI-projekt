@@ -9,12 +9,10 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_emhpc"]
 radius = 16.0
 
-[node name="tv" type="Node2D" unique_id=1426753947 node_paths=PackedStringArray("pickupArea", "timeLabel")]
+[node name="tv" type="Node2D" unique_id=1426753947]
 material = ExtResource("1_56o7x")
 script = ExtResource("1_emhpc")
-pickupArea = NodePath("PickUpArea")
-itemValue = 50.0
-timeLabel = NodePath("time")
+itemValue = 125.0
 
 [node name="Item_sprite" type="Sprite2D" parent="." unique_id=602351582]
 texture_filter = 1
@@ -37,10 +35,21 @@ interp_to_end = 0.2
 randomness = 1.0
 process_material = ExtResource("4_slduq")
 
-[node name="time" type="Label" parent="." unique_id=2114282409]
+[node name="value" type="Label" parent="." unique_id=1637064392]
+modulate = Color(0.39153132, 0.7859672, 0.99999994, 1)
+texture_filter = 1
+offset_left = -22.0
+offset_right = 22.0
+offset_bottom = 23.0
+text = "0"
+horizontal_alignment = 1
+
+[node name="time" type="Label" parent="." unique_id=1082157103]
+modulate = Color(0.25595018, 0.9174276, 7.70092e-07, 1)
 texture_filter = 1
 offset_left = -16.0
-offset_top = -12.0
-offset_right = 16.0
-offset_bottom = 11.0
+offset_top = -24.0
+offset_right = 17.0
+offset_bottom = -1.0
+text = "0"
 horizontal_alignment = 1

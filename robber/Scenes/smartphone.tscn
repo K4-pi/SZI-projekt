@@ -9,14 +9,11 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_tl1pa"]
 radius = 16.0
 
-[node name="smartphone" type="Node2D" unique_id=503625773 node_paths=PackedStringArray("pickupArea", "itemTexture", "timeLabel")]
+[node name="smartphone" type="Node2D" unique_id=503625773]
 material = ExtResource("1_rlnxe")
 script = ExtResource("1_tl1pa")
-pickupArea = NodePath("PickUpArea")
-itemTexture = NodePath("Item_sprite")
-itemValue = 10.0
+itemValue = 50.0
 rotate = true
-timeLabel = NodePath("time")
 
 [node name="Item_sprite" type="Sprite2D" parent="." unique_id=425580578]
 texture_filter = 1
@@ -40,10 +37,21 @@ interp_to_end = 0.2
 randomness = 1.0
 process_material = ExtResource("4_frxcf")
 
-[node name="time" type="Label" parent="." unique_id=1834159065]
+[node name="value" type="Label" parent="." unique_id=61054834]
+modulate = Color(0.39153132, 0.7859672, 0.99999994, 1)
+texture_filter = 1
+offset_left = -22.0
+offset_right = 22.0
+offset_bottom = 23.0
+text = "0"
+horizontal_alignment = 1
+
+[node name="time" type="Label" parent="." unique_id=796435884]
+modulate = Color(0.25595018, 0.9174276, 7.70092e-07, 1)
 texture_filter = 1
 offset_left = -16.0
-offset_top = -12.0
-offset_right = 16.0
-offset_bottom = 11.0
+offset_top = -24.0
+offset_right = 17.0
+offset_bottom = -1.0
+text = "0"
 horizontal_alignment = 1

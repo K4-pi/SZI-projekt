@@ -8,11 +8,12 @@ public partial class Item : Node2D
 	private Area2D pickupArea;
 	private Sprite2D itemTexture;
 	private Label timeLabel;
+	public Label calculatedValueLabel;
 	
 	[Export] public float itemValue {get; private set;}
 	[Export] public bool rotate;
 
-	public double lastSeen = 0.0f;
+	public float lastSeen = 0.0f;
 
 	private bool showTime;
 
@@ -24,10 +25,12 @@ public partial class Item : Node2D
 		itemTexture = GetNode<Sprite2D>("Item_sprite");
 		pickupArea = GetNode<Area2D>("PickUpArea");
 		timeLabel = GetNode<Label>("time");
+		calculatedValueLabel = GetNode<Label>("value");
 
 		timeLabel.Hide();
+		calculatedValueLabel.Hide();
 
-        if (rotate)
+    if (rotate)
 		{
 			RandomNumberGenerator rng = new RandomNumberGenerator();
 
@@ -46,12 +49,18 @@ public partial class Item : Node2D
 
 		if (showTime)
 		{
-			timeLabel.Show();
-			timeLabel.Text = $"{Mathf.RoundToInt((float)lastSeen)}";
-		}
-		else timeLabel.Hide();
+			calculatedValueLabel.Show();
 
-		lastSeen += delta;
+			timeLabel.Show();
+			timeLabel.Text = $"{Mathf.RoundToInt(lastSeen)}";
+		}
+		else
+		{
+			calculatedValueLabel.Hide();
+			timeLabel.Hide();
+		}
+
+		lastSeen += (float)delta;
 
         var bodies = pickupArea.GetOverlappingBodies();
 
