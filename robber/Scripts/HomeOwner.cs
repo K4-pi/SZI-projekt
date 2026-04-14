@@ -26,7 +26,9 @@ public partial class HomeOwner : CharacterBody2D
 
 	private Node itemsParent;
 
-	private List<Point> patrolPoints; // Points near expensive items
+	Dictionary<Point, Item> itemsAtPoints;
+
+	// private List<Point> patrolPoints; // Points near expensive items
 	private List<Point> path;
 	private Point currentPoint;
 	private Point targetPoint;
@@ -87,10 +89,10 @@ public partial class HomeOwner : CharacterBody2D
 	{
 		if (!isMoving && !isWaiting) 
 		{
-			if (patrolPoints.Count <= 0) return;
-
-			int r = randomGenerator.RandiRange(0, patrolPoints.Count - 1);
-			targetPoint = patrolPoints[r]; 
+			if (itemsAtPoints.Count <= 0) return;
+			
+			int r = randomGenerator.RandiRange(0, itemsAtPoints.Count - 1);
+			targetPoint = itemsAtPoints.Keys.ToArray<Point>()[r];
 
 			if (currentPoint == null && targetPoint == null || targetPoint == currentPoint) return;
 
@@ -127,6 +129,8 @@ public partial class HomeOwner : CharacterBody2D
 						index = 0;
 						path.Clear();
 
+						itemsAtPoints[targetPoint].lastSeen = 0.0f;
+
 						if (!isWaiting) StartWait(2.5f); 
 					}
 				}
@@ -156,7 +160,9 @@ public partial class HomeOwner : CharacterBody2D
     {
 		randomGenerator = new RandomNumberGenerator();
 		path = new List<Point>();
-		patrolPoints = new List<Point>();
+		// patrolPoints = new List<Point>();
+
+		itemsAtPoints = new Dictionary<Point, Item>();
 
 		debugLight.Enabled = false;
 
@@ -170,6 +176,14 @@ public partial class HomeOwner : CharacterBody2D
 		itemsParent = GetNode<Node>("/root/Main/ValuablesItems");
 
 		CreateItems(AStar.starPoints, 20);
+
+		EventBus.Instance.RemoveItemPoint += (Item item) =>
+		{
+			foreach (var it in itemsAtPoints)
+			{
+				if (it.Value == item) itemsAtPoints.Remove(it.Key);
+			}	
+		};
 	}
 
 	private void CreateItems(List<Point> points, int itemsCount)
@@ -198,13 +212,15 @@ public partial class HomeOwner : CharacterBody2D
 				Point p = it.closestPoint;
 				if (p != null)
 				{
-					float value = it.itemValue;
+					itemsAtPoints.Add(p, it);
+	
+					// float value = it.itemValue;
 
-					// Simple probability of getting item
-					for (float i = 0.0f; i < value; i++)
-					{
-						patrolPoints.Add(p);				
-					}
+					// // Simple probability of getting item
+					// for (float i = 0.0f; i < value; i++)
+					// {
+					// 	patrolPoints.Add(p);				
+					// }
 				} 
 			}
 		}
@@ -240,9 +256,9 @@ public partial class HomeOwner : CharacterBody2D
 				}	
 			}	
 
-			if (patrolPoints.Count > 0)
+			if (itemsAtPoints.Count > 0)
 			{
-				foreach (var p in patrolPoints)
+				foreach (var p in itemsAtPoints.Keys.ToArray<Point>())
 				{
 					Vector2 origin = ToLocal(p.GlobalPosition);
 
