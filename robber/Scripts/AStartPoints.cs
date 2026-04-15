@@ -11,7 +11,7 @@ public partial class AStartPoints : Node2D
 
 	public List<Point> starPoints;
 	
-	public void CreatePoints()
+	public void CreatePoints(RayCast2D checkWallRay)
 	{
 		starPoints = new List<Point>();
 		var cells = floorLayer.GetUsedCells();
@@ -28,10 +28,10 @@ public partial class AStartPoints : Node2D
 			starPoints.Add(newPoint);
 		}
 
-		ConnectNeighbors();
+		ConnectNeighbors(checkWallRay);
 	}
 
-	public void CreatePoints(Node2D[] stairsNodes)
+	public void CreatePoints(Node2D[] stairsNodes, RayCast2D checkWallRay)
 	{
 		starPoints = new List<Point>();
 		var cells = floorLayer.GetUsedCells();
@@ -78,30 +78,42 @@ public partial class AStartPoints : Node2D
 		}
 		else GD.Print("Stairs list is empty");
 
-		ConnectNeighbors();
+		ConnectNeighbors(checkWallRay);
 	}
 
-	public void ConnectNeighbors()
+	public void ConnectNeighbors(RayCast2D checkWallRay)
 	{
-
 		foreach (Point p in starPoints)
-		{
-			// p.neighbors = new List<Point>();
-
+		{			
 			List<Point> neighboringPoints = new List<Point>();
 
 			foreach (Point n in starPoints)
 			{
 				if (p == n) continue;
-
+			
 				float distance = p.GlobalPosition.DistanceTo(n.GlobalPosition);
-				
-				if (distance < 23.0f) neighboringPoints.Add(n);
+
+				if (distance < 23f)
+				{
+					checkWallRay.GlobalPosition = p.GlobalPosition;
+
+					checkWallRay.TargetPosition = checkWallRay.ToLocal(n.GlobalPosition);
+
+					checkWallRay.ForceRaycastUpdate();
+
+					// DEBUG PRINT
+					if (checkWallRay.GetCollider() != null) 
+					{
+						var hit = checkWallRay.GetCollider();
+						GD.Print($"Ray from {p.Name} hit {((Node)hit).Name}");
+					}
+					else neighboringPoints.Add(n);
+				}	
 			}
 
 			p.neighbors.AddRange(neighboringPoints);
 		}
-		
+
 		GD.Print("AStar Neighbors connected");
 	}
 

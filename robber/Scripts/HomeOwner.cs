@@ -4,8 +4,6 @@ using System.Linq;
 
 public partial class HomeOwner : CharacterBody2D
 {
-	private bool debugMode = false;
-
 	private AStartPoints AStar = new AStartPoints();
 
 	[Export] public PackedScene dollarScene;
@@ -33,6 +31,9 @@ public partial class HomeOwner : CharacterBody2D
 	private Point nextPoint = null;
 
 	private int index = 0;
+
+	private bool debugMode = false;
+	private bool generatedPoints = false;
 	private bool isMoving = false;
 	private bool isWaiting = false;
 	private bool isChasing = false;
@@ -98,7 +99,9 @@ public partial class HomeOwner : CharacterBody2D
 					dictObj.Value.calculatedValueLabel.Text = $"start";			
 					continue;
 				}	
-				
+
+				if (currentPoint == null) return;
+
 				List<Point> tmpPath = AStar.GetPath(currentPoint.GlobalPosition, dictObj.Key.GlobalPosition);
 
 				float pointValue = 
@@ -187,16 +190,8 @@ public partial class HomeOwner : CharacterBody2D
 		debugLight.Enabled = false;
 
 		AStar.floorLayer = floor;
-		AStar.CreatePoints(stairsPoints);
 
 		itemsParent = GetNode<Node>("/root/Main/ValuablesItems");
-
-		CreateItems(AStar.starPoints, 20);
-
-		currentPoint = itemsAtPoints.Keys.ToArray<Point>()
-			[new RandomNumberGenerator().RandiRange(0, itemsAtPoints.Count - 1)]; // Spawn at one of items
-
-		GlobalPosition = currentPoint.GlobalPosition;
 		
 		EventBus.Instance.RemoveItemPoint += (Item item) =>
 		{
@@ -296,7 +291,25 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _Process(double delta)
     {
-		QueueRedraw();
+		if (!generatedPoints) // initialization is needed here because can't call physic functions in _Ready()
+		{
+			RayCast2D checkWallRay = new RayCast2D();
+			GetTree().Root.AddChild(checkWallRay);
+
+			AStar.CreatePoints(stairsPoints, checkWallRay);
+			CreateItems(AStar.starPoints, 20);
+
+			currentPoint = itemsAtPoints.Keys.ToArray<Point>()
+				[new RandomNumberGenerator().RandiRange(0, itemsAtPoints.Count - 1)]; // Spawn at one of items
+
+			GlobalPosition = currentPoint.GlobalPosition;
+
+			generatedPoints = true;
+
+			checkWallRay.QueueFree();
+		}
+
+		if (debugMode) QueueRedraw();
 
 		if (isChasing) audioSource.PitchScale = 2.0f;
 		else audioSource.PitchScale = 1.0f;
@@ -316,6 +329,8 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+		if (!generatedPoints) return;	
+
 		var viewBodies = viewArea.GetOverlappingBodies();
 
 		rayToPlayer.TargetPosition = ToLocal(_player.Position);
