@@ -101,13 +101,7 @@ public partial class AStartPoints : Node2D
 
 					checkWallRay.ForceRaycastUpdate();
 
-					// DEBUG PRINT
-					if (checkWallRay.GetCollider() != null) 
-					{
-						var hit = checkWallRay.GetCollider();
-						GD.Print($"Ray from {p.Name} hit {((Node)hit).Name}");
-					}
-					else neighboringPoints.Add(n);
+					if (checkWallRay.GetCollider() == null) neighboringPoints.Add(n);
 				}	
 			}
 
