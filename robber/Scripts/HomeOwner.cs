@@ -296,6 +296,8 @@ public partial class HomeOwner : CharacterBody2D
 			RayCast2D checkWallRay = new RayCast2D();
 			GetTree().Root.AddChild(checkWallRay);
 
+			checkWallRay.CollisionMask = 2;
+
 			AStar.CreatePoints(stairsPoints, checkWallRay);
 			CreateItems(AStar.starPoints, 20);
 

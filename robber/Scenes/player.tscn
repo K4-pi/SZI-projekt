@@ -118,7 +118,7 @@ animations = [{
 script = ExtResource("1_cvnsp")
 playerSprite = NodePath("Player_sprite")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=447690470]
+[node name="playerCollider" type="CollisionShape2D" parent="." unique_id=447690470]
 shape = SubResource("CircleShape2D_vgqql")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1113765815]

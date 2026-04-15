@@ -394,7 +394,8 @@ texture = ExtResource("8_344ge")
 
 [sub_resource type="TileSet" id="TileSet_u50mg"]
 occlusion_layer_0/light_mask = 1
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
 sources/0 = SubResource("TileSetAtlasSource_3pmx8")
 
 [node name="Main" type="Node" unique_id=257254260]
@@ -467,7 +468,7 @@ script = ExtResource("7_344ge")
 metadata/_edit_lock_ = true
 
 [node name="player" parent="." unique_id=1319846753 instance=ExtResource("3_8gbba")]
-position = Vector2(664, 160)
+position = Vector2(680, 159)
 metadata/_edit_lock_ = true
 
 [node name="PlayerManager" type="Node" parent="." unique_id=1723852406]
