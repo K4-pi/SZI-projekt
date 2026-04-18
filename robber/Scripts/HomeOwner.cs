@@ -99,30 +99,41 @@ public partial class HomeOwner : CharacterBody2D
 
 			float lowestPathValue = 0f;
 
-			foreach (var dictObj in itemsAtPoints) // Points evaluation
+			if (itemsAtPoints.Count > 1)
 			{
-				if (dictObj.Key == currentPoint)
+				foreach (var dictObj in itemsAtPoints) // Points evaluation
 				{
-					dictObj.Value.calculatedValueLabel.Text = $"start";			
-					continue;
-				}	
+					if (dictObj.Key == currentPoint)
+					{
+						dictObj.Value.calculatedValueLabel.Text = $"start";			
+						continue;
+					}	
 
-				if (currentPoint == null) return;
+					if (currentPoint == null) return;
 
-				List<Point> tmpPath = AStar.GetPath(currentPoint.GlobalPosition, dictObj.Key.GlobalPosition);
+					List<Point> tmpPath = AStar.GetPath(currentPoint.GlobalPosition, dictObj.Key.GlobalPosition);
 
-				float pointValue = 
-					(((float)tmpPath.Count / 5f) + (dictObj.Value.itemValue / 2f)) * 
-					dictObj.Value.lastSeen;
+					float pointValue = 
+						(((float)tmpPath.Count / 5f) + (dictObj.Value.itemValue / 2f)) * 
+						dictObj.Value.lastSeen;
 
-				dictObj.Value.calculatedValueLabel.Text = $"{Mathf.Round(pointValue)}";
+					dictObj.Value.calculatedValueLabel.Text = $"{Mathf.Round(pointValue)}";
 
-				if (pointValue > lowestPathValue)
-				{
-					lowestPathValue = pointValue;
+					if (pointValue > lowestPathValue)
+					{
+						lowestPathValue = pointValue;
 
-					path = tmpPath;
+						path = tmpPath;
+					}
 				}
+			}
+			else // When less than 2 items left
+			{
+				RandomNumberGenerator rng = new RandomNumberGenerator();
+
+				int n = rng.RandiRange(0, rooms.Count() - 1);
+
+				path = AStar.GetPath(GlobalPosition, rooms[n].GlobalPosition);
 			}
 
 			if (path.Count <= 0) 
@@ -191,9 +202,9 @@ public partial class HomeOwner : CharacterBody2D
 		targetPoint = path[path.Count - 1];
 		MoveTo(nextPoint.GlobalPosition, delta);
 
-		if (currentPoint == targetPoint)
+		if (currentPoint == targetPoint && !isWaiting)
 		{
-			if (wanderIndex > 2)
+			if (wanderIndex > 2) // Cancel after 3 cycles
 			{
 				wasChasing = false;
 				isMoving = false;
@@ -417,7 +428,7 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-		if (!generatedPoints) return;	
+		if (!generatedPoints) return;
 
 		var hitBodies = hitBox.GetOverlappingBodies();
 
@@ -452,6 +463,7 @@ public partial class HomeOwner : CharacterBody2D
 
 			wanderIndex = 0; // reset wander count
 		}
+
 		else if (wasChasing) PostChaseState(delta); // POST CHASE (lost player)
 		else PatrolState(delta); // PATROL
     }
