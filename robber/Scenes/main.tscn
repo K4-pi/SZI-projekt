@@ -129,7 +129,7 @@ position = Vector2(560, -944)
 rotation = -3.1415927
 mainNeighbor = NodePath("../parter_2ndfloor")
 
-[node name="ValuablesItems" type="Node2D" parent="." unique_id=1724137246]
+[node name="Dollars" type="Node2D" parent="." unique_id=1724137246]
 metadata/_edit_lock_ = true
 
 [node name="home_owner" parent="." unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "gameOverSource", "debugLight", "floor", "_player", "stairsPoints") instance=ExtResource("5_kry3j")]

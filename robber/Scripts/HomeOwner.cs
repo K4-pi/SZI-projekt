@@ -20,10 +20,6 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] RayCast2D rayToPlayer;
 	[Export] Node2D[] stairsPoints;
 
-	private RandomNumberGenerator randomGenerator;
-
-	private Node itemsParent;
-
 	Dictionary<Point, Item> itemsAtPoints; // Points near item to patrol
 	private List<Point> path;
 	private Point currentPoint;
@@ -181,7 +177,6 @@ public partial class HomeOwner : CharacterBody2D
 
 	public override void _Ready()
     {
-		randomGenerator = new RandomNumberGenerator();
 		path = new List<Point>();
 
 		itemsAtPoints = new Dictionary<Point, Item>();
@@ -189,8 +184,6 @@ public partial class HomeOwner : CharacterBody2D
 		debugLight.Enabled = false;
 
 		AStar.floorLayer = floor;
-
-		itemsParent = GetNode<Node>("/root/Main/ValuablesItems");
 		
 		EventBus.Instance.RemoveItemPoint += (Item item) =>
 		{
@@ -208,6 +201,8 @@ public partial class HomeOwner : CharacterBody2D
 		RandomNumberGenerator randomGenerator = new RandomNumberGenerator();
 
 		GD.Print("Creating items");
+		
+		Node dollarsParent = GetNode<Node>("/root/Main/Dollars");
 
 		for (int i = 0; i < itemsCount; i++)
 		{
@@ -215,7 +210,7 @@ public partial class HomeOwner : CharacterBody2D
 
 			Node2D itemInstance = dollarScene.Instantiate<Node2D>(); 
 
-			itemsParent.AddChild(itemInstance);
+			dollarsParent.AddChild(itemInstance);
 
 			itemInstance.Position = points[pointIndex].GlobalPosition; 
 		}
