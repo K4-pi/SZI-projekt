@@ -28,7 +28,8 @@ public partial class HomeOwner : CharacterBody2D
 
 	private int index = 0;
 
-	private bool debugMode = false;
+	private byte debugState = 0;
+
 	private bool generatedPoints = false;
 	private bool isMoving = false;
 	private bool isWaiting = false;
@@ -231,17 +232,21 @@ public partial class HomeOwner : CharacterBody2D
 
 	public override void _Draw()
     {
-		// Dot map
-		if (debugMode)
+		if (debugState > 0)
 		{
+			// Dot map
 			foreach (var p in AStar.starPoints) {
+	
+				if (debugState == 1 && Position.DistanceTo(p.GlobalPosition) > 75f) continue;
+
 				Vector2 pointPos = ToLocal(p.GlobalPosition);
-				DrawCircle(pointPos, 3.5f, Colors.Red, true);
+
+				DrawCircle(pointPos, 3.5f, Colors.Purple, true);
 
 				foreach (Point n in p.neighbors) {
 					
 					if (n != null)
-						DrawLine(pointPos, ToLocal(n.GlobalPosition), Colors.Red, 0.5f, true);
+						DrawLine(pointPos, ToLocal(n.GlobalPosition), Colors.Purple, 0.5f, true);
 				}
 			}
 
@@ -259,6 +264,7 @@ public partial class HomeOwner : CharacterBody2D
 				}	
 			}	
 
+			// Points for items
 			if (itemsAtPoints.Count > 0)
 			{
 				foreach (var p in itemsAtPoints.Keys.ToArray<Point>())
@@ -293,7 +299,7 @@ public partial class HomeOwner : CharacterBody2D
 			checkWallRay.QueueFree();
 		}
 
-		if (debugMode) QueueRedraw();
+		if (debugState > 0) QueueRedraw();
 
 		if (isChasing) audioSource.PitchScale = 2.0f;
 		else audioSource.PitchScale = 1.0f;
@@ -303,11 +309,11 @@ public partial class HomeOwner : CharacterBody2D
 
         if (Input.IsActionJustPressed("toggle_debug"))
 		{
-			if (debugMode) debugMode = false;
-			else debugMode = true;
+			if (debugState >= 2) debugState = 0;
+			else debugState++;
 		}
 
-		if (debugMode) debugLight.Enabled = true;
+		if (debugState > 0) debugLight.Enabled = true;
 		else debugLight.Enabled = false;
 	}
 

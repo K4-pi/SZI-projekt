@@ -9,6 +9,7 @@ public partial class PlayerView : Camera2D
 	[Export] public Node2D player; 
 
 	[Export] public Label pointsLabel;
+	[Export] public Label fpsLabel;
 
 	public float points = 0.0f;
 
@@ -23,6 +24,7 @@ public partial class PlayerView : Camera2D
 		Position = player.GlobalPosition;
 
 		pointsLabel.Text = $"$: {points}";
+		fpsLabel.Text = $"FPS: {Engine.GetFramesPerSecond()}";
 	}
 
 	private void HandleItemPickUp(float value, string audioType)
