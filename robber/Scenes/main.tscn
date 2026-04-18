@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://d4hg2ahnjus23" path="res://Scripts/ItemPositionGenerator.cs" id="8_b3802"]
 [ext_resource type="AudioStream" uid="uid://eyb2nbx5fmdl" path="res://Sounds/backpack_zip.mp3" id="8_wsu2k"]
 [ext_resource type="AudioStream" uid="uid://o5agj5c68t00" path="res://Sounds/paper_money_sound.mp3" id="8_ynf5e"]
+[ext_resource type="Script" uid="uid://cptk6lj4vtuyg" path="res://Scripts/Room.cs" id="9_fevyy"]
 [ext_resource type="AudioStream" uid="uid://pkei3pmwbtem" path="res://Sounds/gameover_sound.mp3" id="9_wsu2k"]
 [ext_resource type="PackedScene" uid="uid://bcmjdcxh8vg1b" path="res://Scenes/tv.tscn" id="10_6iyac"]
 [ext_resource type="PackedScene" uid="uid://k4k4vej68ixc" path="res://Scenes/smartphone.tscn" id="10_d1ilt"]
@@ -108,6 +109,218 @@ position = Vector2(520, 136)
 
 [node name="ItemSpawnPoint1" type="Node2D" parent="ItemPositionGenerator" unique_id=326303214]
 position = Vector2(472, 72)
+
+[node name="Rooms" type="Node" parent="." unique_id=531905541]
+
+[node name="Backdoor" type="Area2D" parent="Rooms" unique_id=758126327 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(624, -152)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Backyard"), NodePath("../Stairway")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Backdoor" unique_id=1119641251]
+polygon = PackedVector2Array(32, -24, 32, 24, -64, 24, -64, -24)
+metadata/_edit_lock_ = true
+
+[node name="Backyard" type="Area2D" parent="Rooms" unique_id=1373596329 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(752, -136)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Backdoor")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Backyard" unique_id=49691751]
+polygon = PackedVector2Array(80, -56, 80, 232, 48, 232, 48, 56, -96, 56, -96, -56)
+metadata/_edit_lock_ = true
+
+[node name="BedroomParter" type="Area2D" parent="Rooms" unique_id=711901165 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(734, -40)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Salon")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/BedroomParter" unique_id=808732320]
+polygon = PackedVector2Array(66, -40, 66, 40, -62, 40, -62, -40)
+metadata/_edit_lock_ = true
+
+[node name="Salon" type="Area2D" parent="Rooms" unique_id=415955977 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(728, 56)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../BedroomParter"), NodePath("../MainHall")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Salon" unique_id=512861428]
+polygon = PackedVector2Array(72, -56, 72, 56, -72, 56, -72, -56)
+metadata/_edit_lock_ = true
+
+[node name="Frontyard" type="Area2D" parent="Rooms" unique_id=1894677538 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(682, 152)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../MainHall")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Frontyard" unique_id=1525877575]
+polygon = PackedVector2Array(150, -56, 150, 40, -154, 40, -154, -8, -138, -8, -138, -40, 118, -40, 118, -56)
+metadata/_edit_lock_ = true
+
+[node name="Stairway" type="Area2D" parent="Rooms" unique_id=1395486030 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(609, -64)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../MainHall"), NodePath("../Backdoor"), NodePath("../TVroom"), NodePath("../StairwayBasement"), NodePath("../StairwaySecondFloor")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Stairway" unique_id=2133910138]
+polygon = PackedVector2Array(47, -64, 47, -16, 63, -16, 63, 64, -49, 64, -49, 48, -65, 48, -65, -16, -49, -16, -49, -64)
+metadata/_edit_lock_ = true
+
+[node name="Guestroom" type="Area2D" parent="Rooms" unique_id=1363622045 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(496, -32)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Kitchen"), NodePath("../BathroomParter"), NodePath("../TVroom")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Guestroom" unique_id=622686927]
+polygon = PackedVector2Array(48, -48, 48, 16, 64, 16, 64, 48, -48, 48, -48, -48)
+metadata/_edit_lock_ = true
+
+[node name="TVroom" type="Area2D" parent="Rooms" unique_id=842304372 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(528, -104)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Guestroom"), NodePath("../Stairway")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/TVroom" unique_id=1230240030]
+polygon = PackedVector2Array(32, -56, 32, 24, -96, 24, -96, -56)
+metadata/_edit_lock_ = true
+
+[node name="StairwaySecondFloor" type="Area2D" parent="Rooms" unique_id=1403829579 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(617, -960)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Stairway"), NodePath("../BathroomSecondFloor"), NodePath("../SecondFloor1"), NodePath("../SecondFloor5")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/StairwaySecondFloor" unique_id=1111915596]
+polygon = PackedVector2Array(39, -96, 39, 80, -57, 80, -57, 32, -73, 32, -73, -32, -57, -32, -57, -96)
+metadata/_edit_lock_ = true
+
+[node name="SecondFloor5" type="Area2D" parent="Rooms" unique_id=1376253141 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(608, -832)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../SecondFloor4"), NodePath("../StairwaySecondFloor")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/SecondFloor5" unique_id=946592280]
+polygon = PackedVector2Array(48, -48, 48, 64, -48, 64, -48, -48)
+metadata/_edit_lock_ = true
+
+[node name="SecondFloor4" type="Area2D" parent="Rooms" unique_id=1665422235 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(504, -808)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../SecondFloor2"), NodePath("../SecondFloor5")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/SecondFloor4" unique_id=371724576]
+polygon = PackedVector2Array(56, -56, 56, 40, 40, 40, 40, 72, -56, 72, -56, -56)
+metadata/_edit_lock_ = true
+
+[node name="SecondFloor3" type="Area2D" parent="Rooms" unique_id=1986629548 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(424, -920)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../SecondFloor2")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/SecondFloor3" unique_id=1807821552]
+polygon = PackedVector2Array(24, -40, 24, 56, -24, 56, -24, -40)
+metadata/_edit_lock_ = true
+
+[node name="SecondFloor2" type="Area2D" parent="Rooms" unique_id=316186807 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(504, -920)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../SecondFloor1"), NodePath("../SecondFloor3"), NodePath("../SecondFloor4")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/SecondFloor2" unique_id=785139325]
+polygon = PackedVector2Array(40, -40, 40, -8, 56, -8, 56, 56, -56, 56, -56, -40)
+metadata/_edit_lock_ = true
+
+[node name="SecondFloor1" type="Area2D" parent="Rooms" unique_id=2011048214 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(496, -1000)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../StairwaySecondFloor"), NodePath("../SecondFloor2")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/SecondFloor1" unique_id=1362880453]
+polygon = PackedVector2Array(64, -40, 64, 8, 48, 8, 48, 40, -64, 40, -64, -40)
+metadata/_edit_lock_ = true
+
+[node name="BathroomSecondFloor" type="Area2D" parent="Rooms" unique_id=456910245 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(624, -1024)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../StairwaySecondFloor")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/BathroomSecondFloor" unique_id=262759397]
+polygon = PackedVector2Array(32, -32, 32, 16, -64, 16, -64, -32)
+metadata/_edit_lock_ = true
+
+[node name="BathroomParter" type="Area2D" parent="Rooms" unique_id=276262067 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(424, -40)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Guestroom")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/BathroomParter" unique_id=1124329394]
+polygon = PackedVector2Array(24, -40, 24, 56, -24, 56, -24, -40)
+metadata/_edit_lock_ = true
+
+[node name="BasementSmall" type="Area2D" parent="Rooms" unique_id=1882639140 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(528, 664)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../StairwayBasement")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/BasementSmall" unique_id=2058628146]
+polygon = PackedVector2Array(16, -56, 16, 56, -16, 56, -16, -56)
+metadata/_edit_lock_ = true
+
+[node name="BasementMain" type="Area2D" parent="Rooms" unique_id=1389829256 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(600, 776)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../StairwayBasement")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/BasementMain" unique_id=185598663]
+polygon = PackedVector2Array(88, -56, 88, 56, -72, 56, -72, -56)
+metadata/_edit_lock_ = true
+
+[node name="StairwayBasement" type="Area2D" parent="Rooms" unique_id=73603757 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(617, 664)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Stairway"), NodePath("../BasementSmall"), NodePath("../BasementMain")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/StairwayBasement" unique_id=164732454]
+polygon = PackedVector2Array(71, -56, 71, 56, -73, 56, -73, -56, 23, -56, 23, -72, 55, -72, 55, -56)
+metadata/_edit_lock_ = true
+
+[node name="MainHall" type="Area2D" parent="Rooms" unique_id=610284497 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(608, 56)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../Kitchen"), NodePath("../Salon"), NodePath("../Frontyard")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/MainHall" unique_id=1959981681]
+polygon = PackedVector2Array(48, -56, 48, 56, -48, 56, -48, -56)
+metadata/_edit_lock_ = true
+
+[node name="Kitchen" type="Area2D" parent="Rooms" unique_id=351332651 node_paths=PackedStringArray("neighborRooms")]
+position = Vector2(504, 72)
+script = ExtResource("9_fevyy")
+neighborRooms = [NodePath("../MainHall"), NodePath("../Guestroom")]
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Kitchen" unique_id=470959089]
+polygon = PackedVector2Array(-56, 72, 40, 72, 40, 40, 56, 40, 56, -56, -56, -56)
+metadata/_edit_lock_ = true
 
 [node name="Stairs" type="Node" parent="." unique_id=361758220]
 

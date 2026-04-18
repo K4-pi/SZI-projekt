@@ -20,7 +20,13 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] RayCast2D rayToPlayer;
 	[Export] Node2D[] stairsPoints;
 
+	private List<Area2D> rooms = new List<Area2D>();
+
 	Dictionary<Point, Item> itemsAtPoints; // Points near item to patrol
+
+	private Area2D previousRoom = null;
+	private Area2D currentRoom = null;
+
 	private List<Point> path;
 	private Point currentPoint;
 	private Point targetPoint;
@@ -28,21 +34,23 @@ public partial class HomeOwner : CharacterBody2D
 
 	private int index = 0;
 
+	private byte wanderIndex = 0;
 	private byte debugState = 0;
 
 	private bool generatedPoints = false;
 	private bool isMoving = false;
 	private bool isWaiting = false;
-	private bool isChasing = false;
+	private bool wasChasing = false;
 
-	[Export] public float Speed = 30.0f;
+	[Export] public float baseSpeed = 30.0f;
+	[Export] public float sprintMultiplier = 2f;
     [Export] public float ArrivalTolerance = 0.75f; // How close to count as "arrived" to point
 
     public void MoveTo(Vector2 targetGlobalPos, double delta)
     {
-		float speed = Speed;
+		float speed = baseSpeed;
 
-		if (isChasing) speed *= 2.0f;
+		if (wasChasing) speed = baseSpeed * sprintMultiplier;
 
         Vector2 direction = GlobalPosition.DirectionTo(targetGlobalPos);
 
@@ -58,7 +66,10 @@ public partial class HomeOwner : CharacterBody2D
 		float rotationSpeed = 3.0f;
 		Vector2 rotationTarget = targetGlobalPos;
 
-		if (isChasing) rotationTarget = player.GlobalPosition;
+		if (wasChasing && rayToPlayer.GetCollider() is Player)
+		{
+			rotationTarget = player.GlobalPosition;
+		} 
 
 		// Smooth rotation
     	float targetAngle = GlobalPosition.AngleToPoint(rotationTarget);
@@ -175,6 +186,85 @@ public partial class HomeOwner : CharacterBody2D
 		}
 	}
 
+	private void PostChaseState(double delta)
+	{
+		targetPoint = path[path.Count - 1];
+		MoveTo(nextPoint.GlobalPosition, delta);
+
+		if (currentPoint == targetPoint)
+		{
+			if (wanderIndex > 2)
+			{
+				wasChasing = false;
+				isMoving = false;
+				path.Clear();
+				targetPoint = currentPoint;
+
+				wanderIndex = 0; // reset wander count
+
+				return;
+			}
+
+			if (wanderIndex == 0) // First wander go to closest room
+			{
+				int closest = int.MaxValue;
+
+				List<Point> tmpPath = new List<Point>();
+
+				foreach (var room in rooms)
+				{
+					tmpPath = AStar.GetPath(GlobalPosition, room.GlobalPosition);
+
+					if (tmpPath.Count() < closest)
+					{
+						closest = tmpPath.Count();
+						path = tmpPath;
+						currentRoom = room;
+					}
+				}
+			}
+			else
+			{
+				foreach (var room in rooms)
+				{
+					if (room.GetOverlappingBodies().Contains(this))
+					{
+						GD.Print($"BOT starts wander at {room.Name}");
+
+						var nRooms = ((Room)room).neighborRooms;
+
+						RandomNumberGenerator rng = new RandomNumberGenerator();
+
+						int neighborsCount = nRooms.Count();
+
+						previousRoom = currentRoom;
+
+						do
+						{
+							currentRoom = nRooms[rng.RandiRange(0, neighborsCount - 1)];
+						} while (neighborsCount > 1 && currentRoom == previousRoom);
+						
+						path = AStar.GetPath(currentPoint.GlobalPosition, currentRoom.GlobalPosition);
+
+						break;
+					}
+				}
+			}
+
+			wanderIndex++;
+			isMoving = true;
+		}
+		else if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
+		{
+			int localIndex = path.IndexOf(nextPoint);
+
+			currentPoint = nextPoint;
+			
+			if (localIndex < path.Count - 1) nextPoint = path[localIndex + 1];
+			else nextPoint = targetPoint;
+		}
+	}
+
 	public override void _Ready()
     {
 		path = new List<Point>();
@@ -192,8 +282,13 @@ public partial class HomeOwner : CharacterBody2D
 				if (it.Value == item) itemsAtPoints.Remove(it.Key);
 			}
 
-			Speed *= 1.1f; // Owner speeds up when you steal item
+			baseSpeed *= 1.1f; // Owner speeds up when you steal item
 		};
+
+		rooms = GetTree().Root.GetNode<Node>("Main/Rooms")
+			.GetChildren()
+			.Cast<Area2D>()
+			.ToList();
 	}
 
 	private void CreateItems(List<Point> points, int itemsCount)
@@ -279,6 +374,9 @@ public partial class HomeOwner : CharacterBody2D
 
     public override void _Process(double delta)
     {
+		// if (currentRoom != null) GD.Print($"Current room = {currentRoom.Name}");	
+		// if (previousRoom != null) GD.Print($"Previous room = {previousRoom.Name}");
+
 		if (!generatedPoints) // initialization is needed here because can't call physic functions in _Ready()
 		{
 			RayCast2D checkWallRay = new RayCast2D();
@@ -301,11 +399,11 @@ public partial class HomeOwner : CharacterBody2D
 
 		if (debugState > 0) QueueRedraw();
 
-		if (isChasing) audioSource.PitchScale = 2.0f;
+		if (wasChasing) audioSource.PitchScale = 2.0f;
 		else audioSource.PitchScale = 1.0f;
 
-		if (!audioSource.Playing && (isMoving || isChasing)) audioSource.Play();
-		else if (audioSource.Playing && !(isMoving || isChasing)) audioSource.Stop();
+		if (!audioSource.Playing && (isMoving || wasChasing)) audioSource.Play();
+		else if (audioSource.Playing && !(isMoving || wasChasing)) audioSource.Stop();
 
         if (Input.IsActionJustPressed("toggle_debug"))
 		{
@@ -328,7 +426,7 @@ public partial class HomeOwner : CharacterBody2D
 			audioSource.Stop();
 			gameOverSource.Play();
 
-			// Need to change to emit signal so player can freeze _Process(delta)
+			// Frezzes player processes
 			player.SetProcess(false);
 			player.SetPhysicsProcess(false);
 
@@ -347,30 +445,14 @@ public partial class HomeOwner : CharacterBody2D
 		if (viewBodies.Contains(player) && rayToPlayer.GetCollider() is Player)
 		{
 			ChaseState(delta);
-			isMoving = false;
+			isMoving = true;
 			isWaiting = false;
 			
-			isChasing = true;
-		}
-		else if (isChasing) // POST CHASE (lost player)
-		{
-			targetPoint = path[path.Count - 1];
-			MoveTo(nextPoint.GlobalPosition, delta);
+			wasChasing = true;
 
-			if (currentPoint == targetPoint)
-			{
-				isChasing = false;
-			}
-			else if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)
-			{
-				int localIndex = path.IndexOf(nextPoint);
-
-				currentPoint = nextPoint;
-				
-				if (localIndex < path.Count - 1) nextPoint = path[localIndex + 1];
-				else nextPoint = targetPoint;
-			}
+			wanderIndex = 0; // reset wander count
 		}
+		else if (wasChasing) PostChaseState(delta); // POST CHASE (lost player)
 		else PatrolState(delta); // PATROL
     }
 }
