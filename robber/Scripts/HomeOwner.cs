@@ -16,7 +16,7 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] Area2D viewArea;
 	[Export] Area2D hitBox;
 	[Export] TileMapLayer floor;
-	[Export] Node2D _player;
+	[Export] Node2D player;
 	[Export] RayCast2D rayToPlayer;
 	[Export] Node2D[] stairsPoints;
 
@@ -33,7 +33,6 @@ public partial class HomeOwner : CharacterBody2D
 	private bool isMoving = false;
 	private bool isWaiting = false;
 	private bool isChasing = false;
-	private bool lostPlayer = false;
 
 	[Export] public float Speed = 30.0f;
     [Export] public float ArrivalTolerance = 0.75f; // How close to count as "arrived" to point
@@ -58,7 +57,7 @@ public partial class HomeOwner : CharacterBody2D
 		float rotationSpeed = 3.0f;
 		Vector2 rotationTarget = targetGlobalPos;
 
-		if (isChasing) rotationTarget = _player.GlobalPosition;
+		if (isChasing) rotationTarget = player.GlobalPosition;
 
 		// Smooth rotation
     	float targetAngle = GlobalPosition.AngleToPoint(rotationTarget);
@@ -159,9 +158,9 @@ public partial class HomeOwner : CharacterBody2D
 
 	private void ChaseState(double delta)
 	{
-		if (AStar.starPoints.Count <= 0 || _player == null) return;
+		if (AStar.starPoints.Count <= 0 || player == null) return;
 
-		path = AStar.GetPath(GlobalPosition, _player.GlobalPosition);
+		path = AStar.GetPath(GlobalPosition, player.GlobalPosition);
 
 		if (path == null || path.Count <= 0) GD.Print("Chase path error");
 
@@ -225,14 +224,6 @@ public partial class HomeOwner : CharacterBody2D
 				if (p != null)
 				{
 					itemsAtPoints.Add(p, it);
-	
-					// float value = it.itemValue;
-
-					// // Simple probability of getting item
-					// for (float i = 0.0f; i < value; i++)
-					// {
-					// 	patrolPoints.Add(p);				
-					// }
 				} 
 			}
 		}
@@ -324,44 +315,44 @@ public partial class HomeOwner : CharacterBody2D
     {
 		if (!generatedPoints) return;	
 
-		var viewBodies = viewArea.GetOverlappingBodies();
-
-		rayToPlayer.TargetPosition = ToLocal(_player.Position);
-		rayToPlayer.ForceRaycastUpdate();
-
 		var hitBodies = hitBox.GetOverlappingBodies();
 
-		if (hitBodies.Contains(_player))
+		if (hitBodies.Contains(player)) // Catch when close
 		{
 			audioSource.Stop();
 			gameOverSource.Play();
 
 			// Need to change to emit signal so player can freeze _Process(delta)
-			_player.SetProcess(false);
-			_player.SetPhysicsProcess(false);
+			player.SetProcess(false);
+			player.SetPhysicsProcess(false);
 
 			SetProcess(false);
 			SetPhysicsProcess(false);
 		}
 
+		var viewBodies = viewArea.GetOverlappingBodies();
+
+		if (Position.DistanceTo(player.GlobalPosition) < 230f)
+		{
+			rayToPlayer.TargetPosition = rayToPlayer.ToLocal(player.GlobalPosition);
+		}
+		
 		// CHASE
-		if (viewBodies.Contains(_player) && rayToPlayer.GetCollider() == _player)
-		{	
+		if (viewBodies.Contains(player) && rayToPlayer.GetCollider() is Player)
+		{
 			ChaseState(delta);
 			isMoving = false;
 			isWaiting = false;
 			
 			isChasing = true;
-			lostPlayer = true;	
 		}
-		else if (lostPlayer) // POST CHASE (lost player)
+		else if (isChasing) // POST CHASE (lost player)
 		{
 			targetPoint = path[path.Count - 1];
 			MoveTo(nextPoint.GlobalPosition, delta);
 
 			if (currentPoint == targetPoint)
 			{
-				lostPlayer = false;
 				isChasing = false;
 			}
 			else if (GlobalPosition.DistanceTo(nextPoint.GlobalPosition) < ArrivalTolerance)

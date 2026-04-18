@@ -132,14 +132,14 @@ mainNeighbor = NodePath("../parter_2ndfloor")
 [node name="Dollars" type="Node2D" parent="." unique_id=1724137246]
 metadata/_edit_lock_ = true
 
-[node name="home_owner" parent="." unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "gameOverSource", "debugLight", "floor", "_player", "stairsPoints") instance=ExtResource("5_kry3j")]
+[node name="home_owner" parent="." unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "gameOverSource", "debugLight", "floor", "player", "stairsPoints") instance=ExtResource("5_kry3j")]
 position = Vector2(164, 92)
 dollarScene = ExtResource("6_21xkr")
 expensiveItems = [NodePath("../ExpensiveItems/smartphone"), NodePath("../ExpensiveItems/tv"), NodePath("../ExpensiveItems/ring"), NodePath("../ExpensiveItems/suitcase"), NodePath("../ExpensiveItems/watch"), NodePath("../ExpensiveItems/wine")]
 gameOverSource = NodePath("../PlayerManager/GameOverSound")
 debugLight = NodePath("../DebugLight")
 floor = NodePath("../NewHouse/FloorLayer")
-_player = NodePath("../player")
+player = NodePath("../player")
 stairsPoints = [NodePath("../Stairs/parter_basment"), NodePath("../Stairs/basement_parter"), NodePath("../Stairs/parter_2ndfloor"), NodePath("../Stairs/2ndfloor_parter")]
 
 [node name="AStartPoints" type="Node2D" parent="." unique_id=587481104]
