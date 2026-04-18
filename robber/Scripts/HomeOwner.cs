@@ -92,7 +92,7 @@ public partial class HomeOwner : CharacterBody2D
 
 			float lowestPathValue = 0f;
 
-			foreach (var dictObj in itemsAtPoints)
+			foreach (var dictObj in itemsAtPoints) // Points evaluation
 			{
 				if (dictObj.Key == currentPoint)
 				{
@@ -105,8 +105,7 @@ public partial class HomeOwner : CharacterBody2D
 				List<Point> tmpPath = AStar.GetPath(currentPoint.GlobalPosition, dictObj.Key.GlobalPosition);
 
 				float pointValue = 
-					((float)tmpPath.Count / 10f) * 
-					(dictObj.Value.itemValue / 2f) * 
+					(((float)tmpPath.Count / 5f) + (dictObj.Value.itemValue / 2f)) * 
 					dictObj.Value.lastSeen;
 
 				dictObj.Value.calculatedValueLabel.Text = $"{Mathf.Round(pointValue)}";
