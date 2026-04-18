@@ -194,12 +194,9 @@ public partial class HomeOwner : CharacterBody2D
 		
 		EventBus.Instance.RemoveItemPoint += (Item item) =>
 		{
-			if (itemsAtPoints.Count > 2) // don't remove point when there is less than 2 of them
+			foreach (var it in itemsAtPoints)
 			{
-				foreach (var it in itemsAtPoints)
-				{
-					if (it.Value == item) itemsAtPoints.Remove(it.Key);
-				}
+				if (it.Value == item) itemsAtPoints.Remove(it.Key);
 			}
 
 			Speed *= 1.1f; // Owner speeds up when you steal item
