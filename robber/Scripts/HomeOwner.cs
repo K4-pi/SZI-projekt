@@ -76,8 +76,6 @@ public partial class HomeOwner : CharacterBody2D
     	Rotation = (float)Mathf.LerpAngle(Rotation, targetAngle, rotationSpeed * delta);
 
         MoveAndSlide();
-
-		
     }
 
 	private async void StartWait(float seconds)
@@ -272,7 +270,11 @@ public partial class HomeOwner : CharacterBody2D
 			currentPoint = nextPoint;
 			
 			if (localIndex < path.Count - 1) nextPoint = path[localIndex + 1];
-			else nextPoint = targetPoint;
+			else if (!isWaiting) // Experimental
+			{
+				nextPoint = targetPoint;
+				StartWait(3f);
+			}
 		}
 	}
 
@@ -413,8 +415,8 @@ public partial class HomeOwner : CharacterBody2D
 		if (wasChasing) audioSource.PitchScale = 2.0f;
 		else audioSource.PitchScale = 1.0f;
 
-		if (!audioSource.Playing && (isMoving || wasChasing)) audioSource.Play();
-		else if (audioSource.Playing && !(isMoving || wasChasing)) audioSource.Stop();
+		if (!audioSource.Playing && (isMoving || wasChasing) && !isWaiting) audioSource.Play();
+		else if (audioSource.Playing && !(isMoving || wasChasing) || isWaiting) audioSource.Stop();
 
         if (Input.IsActionJustPressed("toggle_debug"))
 		{
@@ -463,7 +465,6 @@ public partial class HomeOwner : CharacterBody2D
 
 			wanderIndex = 0; // reset wander count
 		}
-
 		else if (wasChasing) PostChaseState(delta); // POST CHASE (lost player)
 		else PatrolState(delta); // PATROL
     }
