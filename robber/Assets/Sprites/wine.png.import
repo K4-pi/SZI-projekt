@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://caupjq4f3wog3"
-path="res://.godot/imported/grab_animation.png-46aa158f68929fba0b1d55d864f111f2.ctex"
+uid="uid://d3cfyqelmqpuw"
+path="res://.godot/imported/wine.png-9097f324fcd38fd3ef76745c8ac8db14.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/grab_animation.png"
-dest_files=["res://.godot/imported/grab_animation.png-46aa158f68929fba0b1d55d864f111f2.ctex"]
+source_file="res://Assets/Sprites/wine.png"
+dest_files=["res://.godot/imported/wine.png-9097f324fcd38fd3ef76745c8ac8db14.ctex"]
 
 [params]
 

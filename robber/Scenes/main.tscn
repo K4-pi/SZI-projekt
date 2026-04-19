@@ -1,11 +1,11 @@
 [gd_scene format=4 uid="uid://cgrn0yrh4qbsk"]
 
-[ext_resource type="TileSet" uid="uid://dwe3qbpqa7kfv" path="res://house_tileset.tres" id="2_b3802"]
+[ext_resource type="TileSet" uid="uid://dwe3qbpqa7kfv" path="res://Assets/Tilesets/house_tileset.tres" id="2_b3802"]
 [ext_resource type="PackedScene" uid="uid://cdgw1j74roeym" path="res://Scenes/player.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cfroj2cju6h16" path="res://Scenes/owner.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://c3faokhr0vync" path="res://Scenes/dollar.tscn" id="6_21xkr"]
 [ext_resource type="Script" uid="uid://c1q1vagrdh5h8" path="res://Scripts/PlayerView.cs" id="6_jkdf5"]
-[ext_resource type="Texture2D" uid="uid://bffnvhabfj238" path="res://Assets/light_texture.png" id="7_6bp64"]
+[ext_resource type="Texture2D" uid="uid://bffnvhabfj238" path="res://Assets/Light/light_texture.png" id="7_6bp64"]
 [ext_resource type="Script" uid="uid://bk8xj863vyehm" path="res://Scripts/AStartPoints.cs" id="7_344ge"]
 [ext_resource type="Script" uid="uid://d4hg2ahnjus23" path="res://Scripts/ItemPositionGenerator.cs" id="8_b3802"]
 [ext_resource type="AudioStream" uid="uid://eyb2nbx5fmdl" path="res://Sounds/backpack_zip.mp3" id="8_wsu2k"]

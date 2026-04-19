@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwa3ettq452kl"
-path="res://.godot/imported/suitcase.png-c8a16e6f9e27be34858dc1cd3764b6d0.ctex"
+uid="uid://2jfueqvy1agu"
+path="res://.godot/imported/house_tileset.png-7b18bf6318da6b7f6be5617a2852adfe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/suitcase.png"
-dest_files=["res://.godot/imported/suitcase.png-c8a16e6f9e27be34858dc1cd3764b6d0.ctex"]
+source_file="res://Assets/Sprites/house_tileset.png"
+dest_files=["res://.godot/imported/house_tileset.png-7b18bf6318da6b7f6be5617a2852adfe.ctex"]
 
 [params]
 

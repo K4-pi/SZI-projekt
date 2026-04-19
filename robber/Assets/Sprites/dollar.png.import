@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1spd7xjvt40f"
-path="res://.godot/imported/ring.png-677993a95c2eb923e9692603c08925bb.ctex"
+uid="uid://dltaojkfj227t"
+path="res://.godot/imported/dollar.png-26746c8cf2ab7eb1534bffc615e3810c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ring.png"
-dest_files=["res://.godot/imported/ring.png-677993a95c2eb923e9692603c08925bb.ctex"]
+source_file="res://Assets/Sprites/dollar.png"
+dest_files=["res://.godot/imported/dollar.png-26746c8cf2ab7eb1534bffc615e3810c.ctex"]
 
 [params]
 

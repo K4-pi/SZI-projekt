@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c3faokhr0vync"]
 
 [ext_resource type="Script" uid="uid://oth05bd4r3bd" path="res://Scripts/Dollar.cs" id="1_i6hiw"]
-[ext_resource type="Texture2D" uid="uid://dltaojkfj227t" path="res://Assets/dollar.png" id="2_kkvr3"]
+[ext_resource type="Texture2D" uid="uid://dltaojkfj227t" path="res://Assets/Sprites/dollar.png" id="2_kkvr3"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_i6hiw"]
 light_mode = 2

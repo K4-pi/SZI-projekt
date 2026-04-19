@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhimeg7uwrmmr"
-path="res://.godot/imported/enemy_nromal.png-341f59dc6a566f5408bf2ea9f5444280.ctex"
+uid="uid://bl5yxabr47nfo"
+path="res://.godot/imported/smartphone.png-65da5c52d4fbfbbccc92b6f3dbe89a72.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/enemy_nromal.png"
-dest_files=["res://.godot/imported/enemy_nromal.png-341f59dc6a566f5408bf2ea9f5444280.ctex"]
+source_file="res://Assets/Sprites/smartphone.png"
+dest_files=["res://.godot/imported/smartphone.png-65da5c52d4fbfbbccc92b6f3dbe89a72.ctex"]
 
 [params]
 

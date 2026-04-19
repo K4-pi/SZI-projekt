@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cxb4ih6umolsh"]
 
-[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://see_int_light_canvas_item.tres" id="1_a7073"]
+[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://Assets/Materials/see_int_light_canvas_item.tres" id="1_a7073"]
 [ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="2_fvg8f"]
-[ext_resource type="Texture2D" uid="uid://d3cfyqelmqpuw" path="res://Assets/wine.png" id="3_vheh1"]
-[ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/shining.png" id="4_hso6q"]
-[ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://shining_process_material.tres" id="5_tj5jh"]
+[ext_resource type="Texture2D" uid="uid://d3cfyqelmqpuw" path="res://Assets/Sprites/wine.png" id="3_vheh1"]
+[ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/Sprites/shining.png" id="4_hso6q"]
+[ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://Assets/Materials/shining_process_material.tres" id="5_tj5jh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hvk7o"]
 radius = 16.0

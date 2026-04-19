@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3cfyqelmqpuw"
-path="res://.godot/imported/wine.png-df99c59b1101a511fff4ba0625c6c87d.ctex"
+uid="uid://dhimeg7uwrmmr"
+path="res://.godot/imported/enemy_nromal.png-1e16729363db632b779655fbc33fefd6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/wine.png"
-dest_files=["res://.godot/imported/wine.png-df99c59b1101a511fff4ba0625c6c87d.ctex"]
+source_file="res://Assets/Sprites/enemy_nromal.png"
+dest_files=["res://.godot/imported/enemy_nromal.png-1e16729363db632b779655fbc33fefd6.ctex"]
 
 [params]
 

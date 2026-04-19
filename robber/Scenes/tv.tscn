@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bcmjdcxh8vg1b"]
 
-[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://see_int_light_canvas_item.tres" id="1_56o7x"]
+[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://Assets/Materials/see_int_light_canvas_item.tres" id="1_56o7x"]
 [ext_resource type="Script" uid="uid://da5jk3dhpmlfi" path="res://Scripts/Item.cs" id="1_emhpc"]
-[ext_resource type="Texture2D" uid="uid://bin2k7w7ild8f" path="res://Assets/tv.png" id="2_q80sk"]
-[ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/shining.png" id="3_q80sk"]
-[ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://shining_process_material.tres" id="4_slduq"]
+[ext_resource type="Texture2D" uid="uid://bin2k7w7ild8f" path="res://Assets/Sprites/tv.png" id="2_q80sk"]
+[ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/Sprites/shining.png" id="3_q80sk"]
+[ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://Assets/Materials/shining_process_material.tres" id="4_slduq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_emhpc"]
 radius = 16.0

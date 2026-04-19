@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cfroj2cju6h16"]
 
 [ext_resource type="Script" uid="uid://c3wmipsl57s15" path="res://Scripts/HomeOwner.cs" id="1_efvol"]
-[ext_resource type="Texture2D" uid="uid://dhimeg7uwrmmr" path="res://Assets/enemy_nromal.png" id="2_efvol"]
-[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://see_int_light_canvas_item.tres" id="2_ucoee"]
+[ext_resource type="Texture2D" uid="uid://dhimeg7uwrmmr" path="res://Assets/Sprites/enemy_nromal.png" id="2_efvol"]
+[ext_resource type="Material" uid="uid://c5le45o85dep" path="res://Assets/Materials/see_int_light_canvas_item.tres" id="2_ucoee"]
 [ext_resource type="AudioStream" uid="uid://cly7d326qarl3" path="res://Sounds/wood_step.mp3" id="3_1r321"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_efvol"]

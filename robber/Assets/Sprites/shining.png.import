@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mtks0q7yfm67"
-path="res://.godot/imported/light_64x64.png-3ddc43674ac61f972ccf3379b15b4ea7.ctex"
+uid="uid://cpbr3mfd8pyuk"
+path="res://.godot/imported/shining.png-4a028742f8a27ddab9ef35622cf9ecc4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/light_64x64.png"
-dest_files=["res://.godot/imported/light_64x64.png-3ddc43674ac61f972ccf3379b15b4ea7.ctex"]
+source_file="res://Assets/Sprites/shining.png"
+dest_files=["res://.godot/imported/shining.png-4a028742f8a27ddab9ef35622cf9ecc4.ctex"]
 
 [params]
 

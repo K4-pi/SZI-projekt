@@ -14,7 +14,7 @@ config/name="Robber"
 run/main_scene="uid://cgrn0yrh4qbsk"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 run/max_fps=120
-config/icon="res://Assets/icon.svg"
+config/icon="res://Assets/Sprites/icon.svg"
 
 [audio]
 
