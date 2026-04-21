@@ -3,8 +3,7 @@ using System;
 
 public partial class Camera : Node2D
 {
-	private float x = 1f;
-	private float mod = 0.01f;
+	private float x = 0f;
 	private float offset;
 
 	[Export] public RayCast2D rayToPlayer;
@@ -27,8 +26,8 @@ public partial class Camera : Node2D
 	{
 		if (Position.DistanceTo(ToLocal(player.GlobalPosition)) > 200f) return;
 
-		if (x >= 1f || x <= -1f) mod *= -1f;
-		x += mod;
+		if (x >= 360f) x = 0f; // Operating on BIG float values breaks Sin function,
+		x += 0.01f;            // so we ocasionally reset x variable
 
 		Rotation = Mathf.Sin(x * 1.5f) + offset;
 
@@ -38,8 +37,6 @@ public partial class Camera : Node2D
 
 		if (bodies.Contains(player) && rayToPlayer.GetCollider() == player)
 		{
-			// cameraLight.Color = Color.FromOkHsl(1f, 0f, 0f, 0.5f); 
-
 			GD.Print("PLAYER IN CAMERA VIEW");
 			EventBus.Instance.EmitSignal(EventBus.SignalName.PlayerSeenByCamera);
 		}
