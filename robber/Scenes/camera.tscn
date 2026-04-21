@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bvhd02wpxl7ka"]
+
+[ext_resource type="Texture2D" uid="uid://cyywy8nxnwfcw" path="res://Assets/Animations/camera.png" id="1_375tr"]
+[ext_resource type="Script" uid="uid://dtth3juxnqxm2" path="res://Scripts/Camera.cs" id="1_f1cf7"]
+[ext_resource type="Texture2D" uid="uid://bffnvhabfj238" path="res://Assets/Light/light_texture.png" id="3_mhsga"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1cf7"]
+atlas = ExtResource("1_375tr")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhsga"]
+atlas = ExtResource("1_375tr")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xfji6"]
+animations = [{
+"frames": [{
+"duration": 2.5,
+"texture": SubResource("AtlasTexture_f1cf7")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_mhsga")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mhsga"]
+polygon = PackedVector2Array(-2, -3, 0, -9, -2, -4, -4, -9)
+
+[node name="Camera" type="Node2D" unique_id=1145330129]
+
+[node name="cam_body" type="Node2D" parent="." unique_id=289071596 node_paths=PackedStringArray("rayToPlayer")]
+script = ExtResource("1_f1cf7")
+rayToPlayer = NodePath("../rayToPlayer")
+
+[node name="camera_anim" type="AnimatedSprite2D" parent="cam_body" unique_id=628575641]
+texture_filter = 1
+position = Vector2(0, -3)
+sprite_frames = SubResource("SpriteFrames_xfji6")
+frame_progress = 0.62686175
+metadata/_edit_lock_ = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="cam_body" unique_id=2039059043]
+position = Vector2(2, 0)
+occluder = SubResource("OccluderPolygon2D_mhsga")
+metadata/_edit_lock_ = true
+
+[node name="camera_light" type="PointLight2D" parent="cam_body" unique_id=784903538]
+position = Vector2(0, -7)
+scale = Vector2(0.5, 0.5039062)
+color = Color(1, 0, 0, 0.8784314)
+energy = 10.0
+range_z_min = -512
+range_z_max = 512
+shadow_enabled = true
+texture = ExtResource("3_mhsga")
+texture_scale = 0.5
+height = 50.0
+metadata/_edit_lock_ = true
+
+[node name="camera_vision" type="Area2D" parent="cam_body" unique_id=1397916447]
+position = Vector2(0, -6)
+metadata/_edit_lock_ = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="cam_body/camera_vision" unique_id=240960975]
+polygon = PackedVector2Array(0, -1, -41, -46, -16, -52, 16, -52, 41, -46)
+
+[node name="rayToPlayer" type="RayCast2D" parent="." unique_id=1620227877]
+position = Vector2(0, -7)

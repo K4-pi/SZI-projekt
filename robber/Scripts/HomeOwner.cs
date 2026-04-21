@@ -298,6 +298,18 @@ public partial class HomeOwner : CharacterBody2D
 			baseSpeed *= 1.1f; // Owner speeds up when you steal item
 		};
 
+		EventBus.Instance.PlayerSeenByCamera += () =>
+		{
+			path = AStar.GetPath(GlobalPosition, player.GlobalPosition);	
+		
+			isMoving = true;
+			isWaiting = false;
+			
+			wasChasing = true;
+
+			wanderIndex = 0; // reset wander count
+		};
+
 		rooms = GetTree().Root.GetNode<Node>("Main/Rooms")
 			.GetChildren()
 			.Cast<Area2D>()

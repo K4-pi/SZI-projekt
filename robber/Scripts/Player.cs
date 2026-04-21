@@ -19,7 +19,7 @@ public partial class Player : CharacterBody2D
     {
         if (Input.IsActionJustPressed("interact") && !playerSprite.IsPlaying()) playerSprite.Play("grab");
 		
-		if (Input.IsActionPressed("run") && stamina > 0f) stamina -= 0.5f;
+		if (Input.IsActionPressed("run") ) stamina -= 0.5f; // && stamina > 0f
 		else stamina += 0.25f;
     }
 
