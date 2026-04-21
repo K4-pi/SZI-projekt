@@ -10,6 +10,7 @@ public partial class PlayerView : Camera2D
 
 	[Export] public Label pointsLabel;
 	[Export] public Label fpsLabel;
+	[Export] public HSlider staminaBar;
 
 	public float points = 0.0f;
 
@@ -25,6 +26,8 @@ public partial class PlayerView : Camera2D
 
 		pointsLabel.Text = $"$: {points}";
 		fpsLabel.Text = $"FPS: {Engine.GetFramesPerSecond()}";
+
+		staminaBar.Value = ((Player)player).stamina; 
 	}
 
 	private void HandleItemPickUp(float value, string audioType)

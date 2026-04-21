@@ -3,6 +3,7 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
+	public float stamina = 100f;
 
 	[Export] AnimatedSprite2D playerSprite;
 	private float Speed = 50.0f;
@@ -17,6 +18,9 @@ public partial class Player : CharacterBody2D
     public override void _Process(double delta)
     {
         if (Input.IsActionJustPressed("interact") && !playerSprite.IsPlaying()) playerSprite.Play("grab");
+		
+		if (Input.IsActionPressed("run") && stamina > 0f) stamina -= 0.5f;
+		else stamina += 0.25f;
     }
 
 	public override void _PhysicsProcess(double delta)
@@ -25,7 +29,7 @@ public partial class Player : CharacterBody2D
 
 		float speed = Speed;
 
-		if (Input.IsActionPressed("run")) speed *= 1.5f;
+		if (Input.IsActionPressed("run") && stamina > 0.5f) speed *= 1.5f;
 
 		if (direction != Vector2.Zero)
 		{
