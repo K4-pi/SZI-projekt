@@ -6,9 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://cpbr3mfd8pyuk" path="res://Assets/Sprites/shining.png" id="3_dwsqq"]
 [ext_resource type="Material" uid="uid://dl0istmk7a2b7" path="res://Assets/Materials/shining_process_material.tres" id="4_opfgl"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vmgqk"]
-radius = 16.0
-
 [node name="suitcase" type="Node2D" unique_id=355721031]
 material = ExtResource("1_opfgl")
 script = ExtResource("1_vmgqk")
@@ -19,12 +16,6 @@ rotate = true
 texture_filter = 1
 use_parent_material = true
 texture = ExtResource("2_wm4ga")
-
-[node name="PickUpArea" type="Area2D" parent="." unique_id=1236594144]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PickUpArea" unique_id=487949440]
-shape = SubResource("CircleShape2D_vmgqk")
-debug_color = Color(0.97505087, 0, 0.42576468, 0.41960785)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1683983658]
 texture_filter = 1

@@ -8,6 +8,7 @@ public partial class EventBus : Node
     [Signal] public delegate void RemoveItemPointEventHandler(Item item);
     [Signal] public delegate void PlayerSeenByCameraEventHandler();
     [Signal] public delegate void GameOverEventHandler();
+    [Signal] public delegate void EscapeEventHandler();
     
 	public override void _Ready()
     {

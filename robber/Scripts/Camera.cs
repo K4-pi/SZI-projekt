@@ -23,8 +23,6 @@ public partial class Camera : Node2D
 
     public override void _PhysicsProcess(double delta)
 	{
-		if (Position.DistanceTo(ToLocal(player.GlobalPosition)) > 200f) return;
-
 		if (x >= 512f) x = 0f; // Operating on BIG float values breaks Sin function,
 		x += 0.01f;            // so we ocasionally reset x variable
 

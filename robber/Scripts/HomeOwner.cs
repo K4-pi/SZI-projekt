@@ -463,14 +463,9 @@ public partial class HomeOwner : CharacterBody2D
 			audioSource.Stop();
 			gameOverSource.Play();
 
+			debugLight.Enabled = true;
+			
 			EventBus.Instance.EmitSignal(EventBus.SignalName.GameOver);
-
-			// Frezzes player processes
-			player.SetProcess(false);
-			player.SetPhysicsProcess(false);
-
-			SetProcess(false);
-			SetPhysicsProcess(false);
 		}
 
 		var viewBodies = viewArea.GetOverlappingBodies();

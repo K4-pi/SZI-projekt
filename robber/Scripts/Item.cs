@@ -4,10 +4,11 @@ using System.Collections.Generic;
 public partial class Item : Node2D
 {
 	public Point closestPoint {get; private set;}
-	private Area2D pickupArea;
 	private Sprite2D itemTexture;
 	private Label timeLabel;
 	public Label calculatedValueLabel;
+
+	private Node2D player;
 	
 	[Export] public float itemValue {get; private set;}
 	[Export] public bool rotate;
@@ -22,12 +23,13 @@ public partial class Item : Node2D
 		showTime = false;
 
 		itemTexture = GetNode<Sprite2D>("Item_sprite");
-		pickupArea = GetNode<Area2D>("PickUpArea");
 		timeLabel = GetNode<Label>("time");
 		calculatedValueLabel = GetNode<Label>("value");
 
 		timeLabel.Hide();
 		calculatedValueLabel.Hide();
+
+		player = GetTree().Root.GetNode<Node2D>("Main/player");
 
     if (rotate)
 		{
@@ -61,18 +63,13 @@ public partial class Item : Node2D
 
 		lastSeen += (float)delta;
 
-        var bodies = pickupArea.GetOverlappingBodies();
-
-		foreach (var b in bodies)
+		if (GlobalPosition.DistanceTo(player.GlobalPosition) < 25f && Input.IsActionJustPressed("interact"))
 		{
-			if (b.IsInGroup("player") && Input.IsActionJustPressed("interact"))
-			{
-				GD.Print("Pickeup item");
-				EventBus.Instance.EmitSignal(EventBus.SignalName.OnItemPickUp, itemValue, "expensive");
-				EventBus.Instance.EmitSignal(EventBus.SignalName.RemoveItemPoint, this);
-				QueueFree();	
-			} 
-		}
+			GD.Print("Picked up item");
+			EventBus.Instance.EmitSignal(EventBus.SignalName.OnItemPickUp, itemValue, "expensive");
+			EventBus.Instance.EmitSignal(EventBus.SignalName.RemoveItemPoint, this);
+			QueueFree();	
+		} 
     }
 
 	public void GenerateClosestPoint(List<Point> points)
