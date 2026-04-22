@@ -313,7 +313,7 @@ public partial class HomeOwner : CharacterBody2D
 			if (it.Value == item) itemsAtPoints.Remove(it.Key);
 		}
 
-		baseSpeed *= 1.25f; // Owner speeds up when you steal item
+		baseSpeed *= 1.05f; // Owner speeds up when you steal item
 	}
 
 	private void PlayerSeenHandler()

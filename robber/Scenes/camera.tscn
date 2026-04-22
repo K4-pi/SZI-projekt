@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cyywy8nxnwfcw" path="res://Assets/Animations/camera.png" id="1_375tr"]
 [ext_resource type="Script" uid="uid://dtth3juxnqxm2" path="res://Scripts/Camera.cs" id="1_f1cf7"]
 [ext_resource type="Texture2D" uid="uid://bffnvhabfj238" path="res://Assets/Light/light_texture.png" id="3_mhsga"]
+[ext_resource type="AudioStream" uid="uid://kx76nln80fyx" path="res://Sounds/camera.mp3" id="4_xfji6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1cf7"]
 atlas = ExtResource("1_375tr")
@@ -66,6 +67,11 @@ metadata/_edit_lock_ = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="cam_body/camera_vision" unique_id=240960975]
 polygon = PackedVector2Array(0, -1, -41, -46, -16, -52, 16, -52, 41, -46)
+
+[node name="audio" type="AudioStreamPlayer2D" parent="cam_body" unique_id=2071886486]
+stream = ExtResource("4_xfji6")
+volume_db = 3.5
+max_distance = 100.0
 
 [node name="rayToPlayer" type="RayCast2D" parent="." unique_id=1620227877]
 position = Vector2(0, -7)

@@ -9,9 +9,10 @@ public partial class PlayerView : Camera2D
 
 	[Export] public Label pointsLabel;
 	[Export] public Label fpsLabel;
-	[Export] public HSlider staminaBar;
+	[Export] public Label itemsRatio;
 
-	public float points = 0.0f;
+	private float points = 0.0f;
+	private int pickedUpItems = 0;
 
     public override void _Ready()
     {
@@ -28,18 +29,21 @@ public partial class PlayerView : Camera2D
 		Position = player.GlobalPosition;
 
 		pointsLabel.Text = $"$:{points}";
+		itemsRatio.Text = $"{pickedUpItems}/6";
 		fpsLabel.Text = $"FPS:{Engine.GetFramesPerSecond()}";
 
-		staminaBar.Value = ((Player)player).stamina; 
 	}
 
 	private void HandleItemPickUp(float value, string audioType)
 	{
 		points += value; 
-
 		pointsLabel.Text = $"$: {points}";
 
-		if (audioType == "expensive") expensiveItemSound.Play();
+		if (audioType == "expensive")
+		{
+			expensiveItemSound.Play();
+			pickedUpItems++;
+		} 
 		else if (audioType == "dollar") dollarSound.Play();
 	}
 }

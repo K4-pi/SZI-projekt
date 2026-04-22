@@ -2,8 +2,6 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
-	public float stamina = 100f;
-
 	[Export] AnimatedSprite2D playerSprite;
 	private float Speed = 50.0f;
 
@@ -30,12 +28,7 @@ public partial class Player : CharacterBody2D
 
 		float speed = Speed;
 
-		if (Input.IsActionPressed("run") && stamina > 0.5f) 
-		{
-			stamina -= 0.1f;
-			speed *= 1.5f;
-		}
-		else stamina += 0.25f;
+		if (Input.IsActionPressed("run")) speed *= 1.5f;
 
 		if (direction != Vector2.Zero)
 		{

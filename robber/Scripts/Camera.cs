@@ -9,10 +9,12 @@ public partial class Camera : Node2D
 
 	private Area2D cameraVision;
 	private Player player;
+	private AudioStreamPlayer2D cameraAudio;
 
     public override void _Ready()
 	{
 		cameraVision = GetNode<Area2D>("camera_vision");
+		cameraAudio = GetNode<AudioStreamPlayer2D>("audio");
 
 		player = GetTree().Root.GetNode<CharacterBody2D>("Main/player") as Player; 
 
@@ -35,6 +37,8 @@ public partial class Camera : Node2D
 		if (bodies.Contains(player) && rayToPlayer.GetCollider() == player)
 		{
 			EventBus.Instance.EmitSignal(EventBus.SignalName.PlayerSeenByCamera);
+
+			if (!cameraAudio.Playing) cameraAudio.Play();
 		}
 	}
 }
