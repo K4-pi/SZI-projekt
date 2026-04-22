@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bvjh43gvk8mx8"]
+
+[ext_resource type="Theme" uid="uid://cbmvdcvlyxr72" path="res://Assets/Fonts/menu_font.tres" id="1_pposm"]
+[ext_resource type="Script" uid="uid://bp53xe0povqix" path="res://Scripts/MainMenu.cs" id="1_web8u"]
+
+[node name="Control" type="CanvasLayer" unique_id=201834497]
+script = ExtResource("1_web8u")
+
+[node name="Exit" type="Button" parent="." unique_id=1062194838]
+texture_filter = 1
+offset_left = 768.0
+offset_top = 430.0
+offset_right = 1157.3699
+offset_bottom = 572.0
+theme = ExtResource("1_pposm")
+text = "Exit"
+
+[node name="Start" type="Button" parent="." unique_id=798965208]
+texture_filter = 1
+offset_left = 768.0
+offset_top = 239.0
+offset_right = 1157.3699
+offset_bottom = 381.0
+theme = ExtResource("1_pposm")
+text = "Start"

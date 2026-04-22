@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class Camera : Node2D
 {
@@ -26,7 +25,7 @@ public partial class Camera : Node2D
 	{
 		if (Position.DistanceTo(ToLocal(player.GlobalPosition)) > 200f) return;
 
-		if (x >= 360f) x = 0f; // Operating on BIG float values breaks Sin function,
+		if (x >= 512f) x = 0f; // Operating on BIG float values breaks Sin function,
 		x += 0.01f;            // so we ocasionally reset x variable
 
 		Rotation = Mathf.Sin(x * 1.5f) + offset;
@@ -37,7 +36,6 @@ public partial class Camera : Node2D
 
 		if (bodies.Contains(player) && rayToPlayer.GetCollider() == player)
 		{
-			GD.Print("PLAYER IN CAMERA VIEW");
 			EventBus.Instance.EmitSignal(EventBus.SignalName.PlayerSeenByCamera);
 		}
 	}

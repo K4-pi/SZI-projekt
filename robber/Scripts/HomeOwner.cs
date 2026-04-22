@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class HomeOwner : CharacterBody2D
 {
-	private AStartPoints AStar = new AStartPoints();
+	private AStartPoints AStar;
 
 	[Export] public PackedScene dollarScene;
 	[Export] public Node[] expensiveItems;
@@ -20,7 +20,7 @@ public partial class HomeOwner : CharacterBody2D
 	[Export] RayCast2D rayToPlayer;
 	[Export] Node2D[] stairsPoints;
 
-	private List<Area2D> rooms = new List<Area2D>();
+	private List<Area2D> rooms;
 
 	Dictionary<Point, Item> itemsAtPoints; // Points near item to patrol
 
@@ -166,7 +166,7 @@ public partial class HomeOwner : CharacterBody2D
 						isMoving = false;
 						index = 0;
 						
-						itemsAtPoints[currentPoint].lastSeen = 0.0f;
+						if (itemsAtPoints.Count() > 0) itemsAtPoints[currentPoint].lastSeen = 0.0f;
 						
 						path.Clear();
 						
@@ -280,6 +280,9 @@ public partial class HomeOwner : CharacterBody2D
 
 	public override void _Ready()
     {
+		AStar = new AStartPoints();
+		rooms = new List<Area2D>();
+
 		path = new List<Point>();
 
 		itemsAtPoints = new Dictionary<Point, Item>();
@@ -288,32 +291,41 @@ public partial class HomeOwner : CharacterBody2D
 
 		AStar.floorLayer = floor;
 		
-		EventBus.Instance.RemoveItemPoint += (Item item) =>
-		{
-			foreach (var it in itemsAtPoints)
-			{
-				if (it.Value == item) itemsAtPoints.Remove(it.Key);
-			}
-
-			baseSpeed *= 1.1f; // Owner speeds up when you steal item
-		};
-
-		EventBus.Instance.PlayerSeenByCamera += () =>
-		{
-			path = AStar.GetPath(GlobalPosition, player.GlobalPosition);	
-		
-			isMoving = true;
-			isWaiting = false;
-			
-			wasChasing = true;
-
-			wanderIndex = 0; // reset wander count
-		};
+		EventBus.Instance.RemoveItemPoint += RemovedItemHandler; 
+		EventBus.Instance.PlayerSeenByCamera += PlayerSeenHandler;
 
 		rooms = GetTree().Root.GetNode<Node>("Main/Rooms")
 			.GetChildren()
 			.Cast<Area2D>()
 			.ToList();
+	}
+
+    public override void _ExitTree()
+    {
+		EventBus.Instance.PlayerSeenByCamera -= PlayerSeenHandler; // unlinking signal handlers on exit or reload
+		EventBus.Instance.RemoveItemPoint -= RemovedItemHandler;
+    }
+
+	private void RemovedItemHandler(Item item)
+	{
+		foreach (var it in itemsAtPoints)
+		{
+			if (it.Value == item) itemsAtPoints.Remove(it.Key);
+		}
+
+		baseSpeed *= 1.25f; // Owner speeds up when you steal item
+	}
+
+	private void PlayerSeenHandler()
+	{
+		path = AStar.GetPath(GlobalPosition, player.GlobalPosition);	
+		
+		isMoving = true;
+		isWaiting = false;
+		
+		wasChasing = true;
+
+		wanderIndex = 0; // reset wander count
 	}
 
 	private void CreateItems(List<Point> points, int itemsCount)
@@ -450,6 +462,8 @@ public partial class HomeOwner : CharacterBody2D
 		{
 			audioSource.Stop();
 			gameOverSource.Play();
+
+			EventBus.Instance.EmitSignal(EventBus.SignalName.GameOver);
 
 			// Frezzes player processes
 			player.SetProcess(false);

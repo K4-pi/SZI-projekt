@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class PlayerView : Camera2D
 {
@@ -19,13 +18,17 @@ public partial class PlayerView : Camera2D
 		EventBus.Instance.OnItemPickUp += HandleItemPickUp;
     }
 
+    public override void _ExitTree()
+    {
+        EventBus.Instance.OnItemPickUp -= HandleItemPickUp; 
+    }
+
 	public override void _Process(double delta)
 	{
-
 		Position = player.GlobalPosition;
 
-		pointsLabel.Text = $"$: {points}";
-		fpsLabel.Text = $"FPS: {Engine.GetFramesPerSecond()}";
+		pointsLabel.Text = $"$:{points}";
+		fpsLabel.Text = $"FPS:{Engine.GetFramesPerSecond()}";
 
 		staminaBar.Value = ((Player)player).stamina; 
 	}

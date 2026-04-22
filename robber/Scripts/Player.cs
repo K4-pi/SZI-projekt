@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class Player : CharacterBody2D
 {
@@ -10,17 +9,19 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
-		playerSprite.AnimationLooped += () => playerSprite.Stop();
+		playerSprite.AnimationLooped += StopAnimationHandler; 
+		playerSprite.AnimationFinished += StopAnimationHandler;
+    }
 
-		playerSprite.AnimationFinished += () => playerSprite.Stop();
+    public override void _ExitTree()
+    {
+        playerSprite.AnimationLooped -= StopAnimationHandler;
+		playerSprite.AnimationFinished -= StopAnimationHandler;
     }
 
     public override void _Process(double delta)
     {
         if (Input.IsActionJustPressed("interact") && !playerSprite.IsPlaying()) playerSprite.Play("grab");
-		
-		if (Input.IsActionPressed("run") ) stamina -= 0.5f; // && stamina > 0f
-		else stamina += 0.25f;
     }
 
 	public override void _PhysicsProcess(double delta)
@@ -29,7 +30,12 @@ public partial class Player : CharacterBody2D
 
 		float speed = Speed;
 
-		if (Input.IsActionPressed("run") && stamina > 0.5f) speed *= 1.5f;
+		if (Input.IsActionPressed("run") && stamina > 0.5f) 
+		{
+			stamina -= 0.1f;
+			speed *= 1.5f;
+		}
+		else stamina += 0.25f;
 
 		if (direction != Vector2.Zero)
 		{
@@ -43,5 +49,10 @@ public partial class Player : CharacterBody2D
 		LookAt(GetGlobalMousePosition());
 
 		MoveAndSlide();
+	}
+
+	private void StopAnimationHandler()
+	{
+		playerSprite.Stop();
 	}
 }

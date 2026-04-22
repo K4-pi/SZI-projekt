@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://cbmvdcvlyxr72"]
+
+[ext_resource type="FontFile" uid="uid://d4hlc2pa52wx5" path="res://Assets/Fonts/PixelEmulator-xq08.ttf" id="1_rlhqc"]
+
+[resource]
+default_font = ExtResource("1_rlhqc")
+default_font_size = 96

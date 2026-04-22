@@ -12,7 +12,7 @@ radius = 2.0
 polygon = PackedVector2Array(-2, -2, -2, 2, 1, 2, 1, -2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ucoee"]
-size = Vector2(19, 16)
+size = Vector2(14, 16)
 
 [node name="home_owner" type="CharacterBody2D" unique_id=824060885 node_paths=PackedStringArray("expensiveItems", "audioSource", "viewArea", "hitBox", "rayToPlayer", "stairsPoints")]
 script = ExtResource("1_efvol")
@@ -60,6 +60,5 @@ max_distance = 200.0
 [node name="HitBox" type="Area2D" parent="." unique_id=241913534]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1290871692]
-position = Vector2(2.5, 0)
 shape = SubResource("RectangleShape2D_ucoee")
 debug_color = Color(0.5953751, 0.37320942, 1, 0.41960785)

@@ -19,6 +19,9 @@
 [ext_resource type="PackedScene" uid="uid://dyuhrb8r71arj" path="res://Scenes/suitcase.tscn" id="13_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://di51y25eh24tb" path="res://Scenes/watch.tscn" id="15_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://cxb4ih6umolsh" path="res://Scenes/wine.tscn" id="16_b3802"]
+[ext_resource type="Script" uid="uid://ch2w6tofen1rt" path="res://Scripts/GameOverMenu.cs" id="19_3pmx8"]
+[ext_resource type="Theme" uid="uid://dkcjgnjpg74mm" path="res://Assets/Fonts/game_font.tres" id="19_ee4r6"]
+[ext_resource type="Theme" uid="uid://cbmvdcvlyxr72" path="res://Assets/Fonts/menu_font.tres" id="20_gt3je"]
 [ext_resource type="PackedScene" uid="uid://bvhd02wpxl7ka" path="res://Scenes/camera.tscn" id="20_hibaj"]
 [ext_resource type="Script" uid="uid://64apuvtpwn6g" path="res://Scripts/Cameras.cs" id="21_pdsj5"]
 
@@ -372,43 +375,9 @@ script = ExtResource("6_jkdf5")
 expensiveItemSound = NodePath("../ExpensiveItemSound")
 dollarSound = NodePath("../DollarSound")
 player = NodePath("../../player")
-pointsLabel = NodePath("UI/Score")
-fpsLabel = NodePath("UI/FPSLabel")
-staminaBar = NodePath("UI/Stamina")
-
-[node name="UI" type="Control" parent="PlayerManager/PlayerView" unique_id=140790720]
-texture_filter = 1
-layout_mode = 3
-anchors_preset = 0
-offset_left = 9.0
-offset_top = -2.0
-offset_right = 49.0
-offset_bottom = 38.0
-
-[node name="FPSLabel" type="Label" parent="PlayerManager/PlayerView/UI" unique_id=1490660919]
-layout_mode = 0
-offset_left = -273.0
-offset_top = -142.0
-offset_right = -233.0
-offset_bottom = -119.0
-text = "FPS:"
-
-[node name="Score" type="Label" parent="PlayerManager/PlayerView/UI" unique_id=307386706]
-layout_mode = 0
-offset_left = -273.0
-offset_top = 98.0
-offset_right = -221.0
-offset_bottom = 121.0
-text = "$: "
-
-[node name="Stamina" type="HSlider" parent="PlayerManager/PlayerView/UI" unique_id=1368996973]
-texture_filter = 1
-layout_mode = 0
-offset_left = -273.0
-offset_top = 129.0
-offset_right = -137.0
-offset_bottom = 145.0
-value = 100.0
+pointsLabel = NodePath("../CanvasLayer/UI/Score")
+fpsLabel = NodePath("../CanvasLayer/UI/FPSLabel")
+staminaBar = NodePath("../CanvasLayer/UI/Stamina")
 
 [node name="ExpensiveItemSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=1461299490]
 stream = ExtResource("8_wsu2k")
@@ -421,6 +390,68 @@ volume_db = -10.0
 [node name="GameOverSound" type="AudioStreamPlayer" parent="PlayerManager" unique_id=491880160]
 stream = ExtResource("9_wsu2k")
 volume_db = -10.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="PlayerManager" unique_id=1709870256]
+script = ExtResource("19_3pmx8")
+
+[node name="UI" type="Control" parent="PlayerManager/CanvasLayer" unique_id=140790720]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 286.0
+offset_top = 391.0
+offset_right = 326.0
+offset_bottom = 431.0
+
+[node name="FPSLabel" type="Label" parent="PlayerManager/CanvasLayer/UI" unique_id=1490660919]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -6.8250003
+anchor_top = -3.5500002
+anchor_right = -6.8250003
+anchor_bottom = -3.5500002
+offset_left = -5.0
+offset_top = -242.0
+offset_right = 151.0
+offset_bottom = -166.0
+theme = ExtResource("19_ee4r6")
+text = "FPS:"
+
+[node name="Score" type="Label" parent="PlayerManager/CanvasLayer/UI" unique_id=307386706]
+layout_mode = 0
+offset_left = -273.0
+offset_top = 580.0
+offset_right = -160.0
+offset_bottom = 656.0
+theme = ExtResource("19_ee4r6")
+text = "$: "
+
+[node name="Stamina" type="HSlider" parent="PlayerManager/CanvasLayer/UI" unique_id=1368996973]
+texture_filter = 1
+layout_mode = 0
+offset_left = -273.0
+offset_top = 670.0
+offset_right = 89.0
+offset_bottom = 689.0
+value = 100.0
+
+[node name="Menu" type="Button" parent="PlayerManager/CanvasLayer" unique_id=383308979]
+visible = false
+offset_left = 838.0
+offset_top = 554.0
+offset_right = 1209.0
+offset_bottom = 675.0
+theme = ExtResource("20_gt3je")
+text = "Menu"
+
+[node name="Retry" type="Button" parent="PlayerManager/CanvasLayer" unique_id=1325345709]
+visible = false
+offset_left = 838.0
+offset_top = 391.0
+offset_right = 1209.0
+offset_bottom = 508.0
+theme = ExtResource("20_gt3je")
+text = "Retry"
 
 [node name="DebugLight" type="PointLight2D" parent="." unique_id=476575930]
 position = Vector2(79, 56)
